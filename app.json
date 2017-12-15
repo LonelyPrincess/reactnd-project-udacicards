@@ -6,15 +6,11 @@
     "description": "Build your own decks and test your knowledge on different topics!",
     "slug": "udacicards",
     "version": "1.0",
-    "icon": "./res/icons/icon-512.png",
-    "notification": {
-      "icon": "./res/icons/icon-45.png"
-    },
     "ios": {
-      "bundleIdentifier": "org.lonely-princess.udacicards"
+      "bundleIdentifier": "org.lonelyprincess.udacicards"
     },
     "android": {
-      "package": "org.lonely-princess.udacicards"
+      "package": "org.lonelyprincess.udacicards"
     }
   }
 }
