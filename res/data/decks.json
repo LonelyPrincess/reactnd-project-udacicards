@@ -1,0 +1,144 @@
+{
+    "mythology": {
+        "title": "Mythology",
+        "questions": [
+            {
+                "text": "Which is the equivalent of Athena in the roman mythology?",
+                "answers": [
+                    {
+                        "text": "Juno",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "Minerva",
+                        "isTrue": true
+                    },
+                    {
+                        "text": "Cybele",
+                        "isTrue": false
+                    }
+                ]
+            },
+            {
+                "text": "What's the role of Neptune?",
+                "answers": [
+                    {
+                        "text": "God of the sea",
+                        "isTrue": true
+                    },
+                    {
+                        "text": "God of thunder",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "God of the sky",
+                        "isTrue": true
+                    }
+                ]
+            },
+            {
+                "text": "Which is the god of war in the greek mythology?",
+                "answers": [
+                    {
+                        "text": "Mars",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "Kratos",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "Ares",
+                        "isTrue": true
+                    }
+                ]
+            }
+        ]
+    },
+    "samurai": {
+        "title": "Samurai",
+        "questions": [
+            {
+                "text": "Who were the Shinsemgumi meant to protect?",
+                "answers": [
+                    {
+                        "text": "The Chōshū clan",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "The shogunate",
+                        "isTrue": true
+                    },
+                    {
+                        "text": "The Aizu clan",
+                        "isTrue": false
+                    }
+                ]
+            },
+            {
+                "text": "Which of these anime doesn't portrait Saitō Hajime?",
+                "answers": [
+                    {
+                        "text": "Rurouni Kenshin",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "Hakuōki Shinsengumi Kitan",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "Sengoku Basara",
+                        "isTrue": true
+                    }
+                ]
+            },
+            {
+                "text": "Who were allowed to join the Shinsengumi?",
+                "answers": [
+                    {
+                        "text": "Anyone",
+                        "isTrue": true
+                    },
+                    {
+                        "text": "Samurai only",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "Non-samurai classes only",
+                        "isTrue": false
+                    }
+                ]
+            },
+            {
+                "text": "What is the \"harakiri\" ritual about?",
+                "answers": [
+                    {
+                        "text": "A samurai kills themselves by slicing their abdomen open",
+                        "isTrue": true
+                    },
+                    {
+                        "text": "A samurai takes the enemy leader's head to commemorate a victory",
+                        "isTrue": false
+                    }
+                ]
+            },
+            {
+                "text": "Which of these people is known for having a missing eye?",
+                "answers": [
+                    {
+                        "text": "Hijikata Toshizō",
+                        "isTrue": false
+                    },
+                    {
+                        "text": "Date Masamune",
+                        "isTrue": true
+                    },
+                    {
+                        "text": "Ishikawa Goemon",
+                        "isTrue": false
+                    }
+                ]
+            }
+        ]
+    }
+}
