@@ -53,7 +53,8 @@
                     }
                 ]
             }
-        ]
+        ],
+        "lastQuizDate": 1513036800000
     },
     "samurai": {
         "title": "Samurai",
