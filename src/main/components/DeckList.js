@@ -3,9 +3,15 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { countDaysSinceDate } from '../utils/utils';
+import { countDaysSinceDate } from '../utils/Utils';
+import { fetchDeckList } from '../actions';
 
 class DeckList extends React.Component {
+  componentWillMount() {
+    console.log("Fetching deck data...");
+    this.props.actions.fetchDeckList();
+  }
+
   render() {
     const deckList = this.props.decks;
 
@@ -37,4 +43,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null)(DeckList);
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: {
+      fetchDeckList: () => dispatch(fetchDeckList())
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckList);
