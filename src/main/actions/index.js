@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import { generateRandomId } from '../utils/Utils';
 import { createAsyncAction } from '../utils/ActionHelper';
 
 // Key for deck data in AsyncStorage
@@ -16,4 +17,19 @@ export function fetchDeckList () {
     FETCH_DECK_LIST,
     AsyncStorage.getItem(DECKS_STORAGE_KEY)
   );
-};
+}
+
+export function addNewDeck (title) {
+  const deck = {
+    [generateRandomId()]: {
+      title,
+      questions: []
+    }
+  };
+
+  return createAsyncAction(
+    ADD_NEW_DECK,
+    AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(deck)),
+    { deck }
+  );
+}
