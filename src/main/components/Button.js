@@ -5,7 +5,7 @@ import { green, white } from '../utils/Colors';
 
 export default function Button ({ children, onPress, style = {} }) {
   return (
-    <TouchableOpacity onPress={this.submitDeck}>
+    <TouchableOpacity onPress={onPress}>
       <Text style={[ styles.button, style ]}>{children}</Text>
     </TouchableOpacity>
   );
