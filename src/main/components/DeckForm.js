@@ -30,7 +30,10 @@ class DeckForm extends React.Component {
     this.props.actions.addNewDeck(title)
       .then(() => {
         this.setState({ title: '' });
-        displayToast('New deck created');
+        displayToast(`New deck ${title} created!`);
+
+        // Redirect to deck list after creation
+        this.props.navigation.navigate('DeckList');
       });
   };
 
