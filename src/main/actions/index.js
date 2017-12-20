@@ -21,7 +21,7 @@ export function fetchDeckList () {
 
 export function addNewDeck (title) {
   const deck = {
-    [generateRandomId()]: {
+    [title]: {
       title,
       questions: []
     }

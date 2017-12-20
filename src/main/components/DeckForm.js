@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 
 import { addNewDeck } from '../actions';
+import { displayToast } from '../utils/Utils';
 
 class DeckForm extends React.Component {
   state = {
@@ -10,9 +11,26 @@ class DeckForm extends React.Component {
   };
 
   submitDeck = () => {
-    console.log(`Adding new deck ${this.state.title}`);
-    this.props.actions.addNewDeck(this.state.title)
-      .then(() => this.setState({ title: '' }) );
+    const { title } = this.state;
+
+    // Validate title is not empty
+    if (!title) {
+      displayToast('You need to specify a name for the deck!');
+      return;
+    }
+
+    // Check if there's already a deck with that name
+    if (this.props.decks[title]) {
+      displayToast('A deck with that name already exists!');
+      return;
+    }
+
+    console.log(`Adding new deck ${title}`);
+    this.props.actions.addNewDeck(title)
+      .then(() => {
+        this.setState({ title: '' });
+        displayToast('New deck created');
+      });
   };
 
   render() {
@@ -29,6 +47,12 @@ class DeckForm extends React.Component {
   }
 }
 
+function mapStateToProps (state) {
+  return {
+    decks: state
+  };
+}
+
 function mapDispatchToProps (dispatch) {
   return {
     actions: {
@@ -37,4 +61,4 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(DeckForm);
+export default connect(mapStateToProps, mapDispatchToProps)(DeckForm);

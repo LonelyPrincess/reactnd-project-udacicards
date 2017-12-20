@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4';
+import { ToastAndroid } from 'react-native';
 
 /* Obtain difference between two dates in hours. */
 export function countDaysSinceDate (date) {
@@ -11,10 +11,12 @@ export function countDaysSinceDate (date) {
 }
 
 /**
- * Generate random uuid.
- *
- * @returns {string} Generated id.
+ * Display a toast message on screen.
  */
-export function generateRandomId () {
-  return uuidv4();
+export function displayToast (message) {
+  ToastAndroid.showWithGravity(
+    message,
+    ToastAndroid.SHORT,
+    ToastAndroid.BOTTOM
+  );
 }
