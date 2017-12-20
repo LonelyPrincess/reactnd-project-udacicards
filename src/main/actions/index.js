@@ -2,6 +2,8 @@ import { AsyncStorage } from 'react-native';
 import { generateRandomId } from '../utils/Utils';
 import { createAsyncAction } from '../utils/ActionHelper';
 
+import deckData from '../../../res/data/decks.json';
+
 // Key for deck data in AsyncStorage
 const DECKS_STORAGE_KEY = 'UdaciCards::DeckList';
 
@@ -16,6 +18,16 @@ export function fetchDeckList () {
   return createAsyncAction(
     FETCH_DECK_LIST,
     AsyncStorage.getItem(DECKS_STORAGE_KEY)
+      .then((data) => {
+        if (!data) {
+          console.log(`There's no deck data in AsyncStorage. Initializing storage with local json values...`);
+          const initialData = JSON.stringify(deckData);
+          AsyncStorage.setItem(DECKS_STORAGE_KEY, initialData);
+          return initialData;
+        }
+
+        return data;
+      })
   );
 }
 
