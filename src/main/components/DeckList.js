@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { countDaysSinceDate } from '../utils/Utils';
@@ -16,7 +16,7 @@ class DeckList extends React.Component {
     const deckList = this.props.decks;
 
     return (
-      <View>
+      <View style={styles.container}>
         {Object.keys(deckList).map((key, index) => {
           const deck = deckList[key];
           const dayCount = deck.lastQuizDate && countDaysSinceDate(new Date(deck.lastQuizDate));
@@ -36,6 +36,15 @@ class DeckList extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 function mapStateToProps(state) {
   return {

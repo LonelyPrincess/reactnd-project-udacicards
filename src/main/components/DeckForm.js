@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 import { addNewDeck } from '../actions';
 import { displayToast } from '../utils/Utils';
+import Button from './Button';
 
 class DeckForm extends React.Component {
   state = {
@@ -35,17 +36,22 @@ class DeckForm extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
+        <Text>Choose a name for your new deck:</Text>
         <TextInput value={this.state.title} placeholder="Deck title"
           onChangeText={(title) => this.setState({ title })} />
-
-        <TouchableOpacity onPress={this.submitDeck}>
-          <Text>Create deck</Text>
-        </TouchableOpacity>
+        <Button onPress={this.submitDeck}>Create deck</Button>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 30
+  },
+});
 
 function mapStateToProps (state) {
   return {

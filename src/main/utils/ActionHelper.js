@@ -29,5 +29,3 @@ export function createAsyncAction(actionType, ajaxPromise, { status = null, resp
       })
   };
 }
-
-/* TODO: update async method to work with async storage instead of ajax calls */
