@@ -14,9 +14,11 @@ export function countDaysSinceDate (date) {
  * Display a toast message on screen.
  */
 export function displayToast (message) {
-  ToastAndroid.showWithGravity(
+  ToastAndroid.showWithGravityAndOffset(
     message,
     ToastAndroid.SHORT,
-    ToastAndroid.BOTTOM
+    ToastAndroid.BOTTOM,
+    0,
+    30
   );
 }
