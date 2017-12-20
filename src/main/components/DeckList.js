@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, FlatList, StyleSheet } from 'react-native';
 
-import { countDaysSinceDate } from '../utils/Utils';
 import { fetchDeckList } from '../actions';
+
+import DeckListItem from './DeckListItem';
 
 class DeckList extends React.Component {
   componentWillMount() {
@@ -17,21 +17,13 @@ class DeckList extends React.Component {
 
     return (
       <View style={styles.container}>
-        {Object.keys(deckList).map((key, index) => {
-          const deck = deckList[key];
-          const dayCount = deck.lastQuizDate && countDaysSinceDate(new Date(deck.lastQuizDate));
-
-          return (
-            <TouchableOpacity key={key} onPress={() => { console.log(`Selected deck: ${deck.title}`); }}>
-              <Text>{deck.title} has {deck.questions.length} questions</Text>
-              {dayCount && (
-                <Text>
-                  <MaterialCommunityIcons name="alert-outline" /> {dayCount} days since your last quiz!
-                </Text>
-              )}
-            </TouchableOpacity>
-          );
-        })}
+        <FlatList
+          data={Object.keys(deckList)}
+          renderItem={({ item }) => (
+            <DeckListItem deck={deckList[item]} />
+          )}
+          keyExtractor={(item) => item}
+        />
       </View>
     );
   }
@@ -41,6 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
