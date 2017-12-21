@@ -40,7 +40,7 @@ class DeckForm extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Choose a name for your new deck:</Text>
+        <Text style={styles.title}>Choose a name for your new deck:</Text>
         <TextInput value={this.state.title} placeholder="Deck title"
           onChangeText={(title) => this.setState({ title })} />
         <Button onPress={this.submitDeck}>Create deck</Button>
@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30
   },
+  title: {
+    fontSize: 25,
+    textAlign: 'center'
+  }
 });
 
 function mapStateToProps (state) {

@@ -23,6 +23,7 @@ class DeckList extends React.Component {
             <DeckListItem deck={deckList[item]} />
           )}
           keyExtractor={(item) => item}
+          contentContainerStyle={{ padding: 30 }}
         />
       </View>
     );
@@ -33,8 +34,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
-    alignItems: 'center',
     justifyContent: 'center',
   },
 });
