@@ -36,7 +36,7 @@ class DeckDetails extends React.Component {
             <Text>You haven't taken a quiz in {dayCount} days</Text>
           </Text>
         )}
-        <Button onPress={() => console.log(`Add card to deck ${deck.title}`)}>Add card</Button>
+        <Button onPress={() => this.props.navigation.navigate('CreateCard', { deckId: deck.title })}>Add card</Button>
         <Button style={{ backgroundColor: red }}
           onPress={() => console.log(`Start quiz for deck ${deck.title}`)}>Start quiz</Button>
       </View>
