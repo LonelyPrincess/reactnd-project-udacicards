@@ -45,3 +45,21 @@ export function addNewDeck (title) {
     { deck }
   );
 }
+
+
+export function addCardToDeck (deck, card) {
+  const updatedDeck = {
+    [deck.title]: {
+      questions: [
+        ...deck.questions,
+        card
+      ]
+    }
+  };
+
+  return createAsyncAction(
+    ADD_CARD_TO_DECK,
+    AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(updatedDeck)),
+    { deck: updatedDeck, card }
+  );
+}

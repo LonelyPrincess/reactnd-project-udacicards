@@ -4,6 +4,8 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import Button from './Button';
+import { displayToast } from '../utils/Utils';
+import { addCardToDeck } from '../actions/index';
 
 class CardForm extends React.Component {
   state = {
@@ -16,8 +18,37 @@ class CardForm extends React.Component {
     validAnswer: 0
   };
 
+  // Override title in page header
+  static navigationOptions = () => {
+    return {
+      title: `Create new card`
+    };
+  };
+
+  // Set an answer as the valid one
   setValidAnswer = (answerIndex) => {
     this.setState({ validAnswer: answerIndex });
+  };
+
+  //
+  submitCard = () => {
+    // TODO: validation
+
+    const card = {
+      text: this.state.question,
+      answers: this.state.answers
+        .map((answer, index) => ({
+          text: answer,
+          isTrue: this.state.validAnswer === index
+        }))
+        .filter(answer => answer.text)     // Filter empty answers
+    };
+
+    this.props.actions.addCardToDeck(this.props.deck, card);
+
+    // Go back
+    this.props.navigation.goBack();
+    displayToast('New card added to deck!');
   };
 
   render() {
@@ -30,7 +61,7 @@ class CardForm extends React.Component {
         <Text>Write possible answers for your question (at least 2):</Text>
 
         {this.state.answers.map((item, index) => (
-          <View>
+          <View key={index}>
             <TextInput value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
               onChangeText={(answer) => {
                 const updatedAnswers = this.state.answers;
@@ -43,10 +74,26 @@ class CardForm extends React.Component {
           </View>
         ))}
 
-        <Button onPress={() => console.log(`Submit card form`)}>Add card</Button>
+        <Button onPress={this.submitCard}>Add card</Button>
       </View>
     );
   }
 }
 
-export default connect(null, null)(CardForm);
+function mapStateToProps (state, { navigation }) {
+  const { deckId } = navigation.state.params;
+
+  return {
+    deck: state[deckId]
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: {
+      addCardToDeck: (deck, card) => dispatch(addCardToDeck(deck, card))
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardForm);
