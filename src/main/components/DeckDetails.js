@@ -38,7 +38,7 @@ class DeckDetails extends React.Component {
         )}
         <Button onPress={() => this.props.navigation.navigate('CreateCard', { deckId: deck.title })}>Add card</Button>
         <Button style={{ backgroundColor: red }}
-          onPress={() => console.log(`Start quiz for deck ${deck.title}`)}>Start quiz</Button>
+          onPress={() => this.props.navigation.navigate('DeckQuiz', { deckId: deck.title })}>Start quiz</Button>
       </View>
     );
   }

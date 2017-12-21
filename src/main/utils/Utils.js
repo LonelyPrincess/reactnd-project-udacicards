@@ -22,3 +22,13 @@ export function displayToast (message) {
     30
   );
 }
+
+/**
+ * Get a random number between two values (max is exclusive).
+ * @return Integer between min and max.
+ */
+export function getRandomInt (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}

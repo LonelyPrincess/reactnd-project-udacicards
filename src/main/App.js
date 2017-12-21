@@ -11,6 +11,7 @@ import DeckList from './components/DeckList';
 import DeckForm from './components/DeckForm';
 import DeckDetails from './components/DeckDetails';
 import CardForm from './components/CardForm';
+import DeckQuiz from './components/DeckQuiz';
 
 import CustomStatusBar from './components/CustomStatusBar';
 import { green, white } from './utils/Colors';
@@ -77,6 +78,15 @@ const MainNavigator = StackNavigator({
   },
   CreateCard: {
     screen: CardForm,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: green
+      }
+    }
+  },
+  DeckQuiz: {
+    screen: DeckQuiz,
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
