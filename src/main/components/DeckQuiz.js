@@ -18,9 +18,9 @@ class DeckQuiz extends React.Component {
   };
 
   // Override title in page header
-  static navigationOptions = () => {
+  static navigationOptions = ({ navigation }) => {
     return {
-      title: `Quiz`
+      title: (navigation.state.params.showingResults ? 'Quiz results' : 'Quiz')
     };
   };
 
@@ -44,9 +44,8 @@ class DeckQuiz extends React.Component {
     }
 
     // Increment card counter and display next card
-    if (this.state.cardCounter !== NUM_QUESTIONS) {
+    if (this.state.cardCounter <= NUM_QUESTIONS) {
       this.getRandomCard();
-      return;
     }
   };
 
@@ -57,11 +56,20 @@ class DeckQuiz extends React.Component {
       cardCounter: 0,
       currentCard: null
     }, this.getRandomCard);
+
+    this.props.navigation.setParams({ showingResults: false });
   };
 
   componentWillMount () {
     this.getRandomCard();
   }
+
+  // Change header when we need to show stats
+  componentWillUpdate () {
+    if (this.state.cardCounter === NUM_QUESTIONS) {
+      this.props.navigation.setParams({ showingResults: true });
+    }
+  };
 
   render() {
     const { currentCard, cardCounter, score } = this.state;
@@ -70,7 +78,7 @@ class DeckQuiz extends React.Component {
       return null;
     }
 
-    if (cardCounter === NUM_QUESTIONS) {
+    if (cardCounter > NUM_QUESTIONS) {
       return (
         <QuizResults
           successRatio={(score / NUM_QUESTIONS) * 100}
