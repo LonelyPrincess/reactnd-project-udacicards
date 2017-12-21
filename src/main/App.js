@@ -4,11 +4,13 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 
 import rootReducer from './reducers';
 import DeckList from './components/DeckList';
 import DeckForm from './components/DeckForm';
+import DeckDetails from './components/DeckDetails';
+
 import CustomStatusBar from './components/CustomStatusBar';
 import { green, white } from './utils/Colors';
 
@@ -58,6 +60,21 @@ const tabSettings = {
 
 const Tabs = TabNavigator(tabItems, tabSettings);
 
+/* --- Stack --- */
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs
+  },
+  DeckDetails: {
+    screen: DeckDetails,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: green
+      }
+    }
+  }
+});
 
 export default class App extends React.Component {
   render() {
@@ -65,7 +82,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <View style={{ flex: 1 }}>
           <CustomStatusBar />
-          <Tabs />
+          <MainNavigator />
         </View>
       </Provider>
     );
