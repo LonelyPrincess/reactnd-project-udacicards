@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
 import QuizResults from './QuizResults';
 import { getRandomInt } from '../utils/Utils';
+
+import { red } from '../utils/Colors';
 
 const NUM_QUESTIONS = 10;
 
@@ -14,7 +16,8 @@ class DeckQuiz extends React.Component {
   state = {
     score: 0,
     cardCounter: 0,
-    currentCard: null
+    currentCard: null,
+    revealAnswer: false
   };
 
   // Override title in page header
@@ -24,11 +27,21 @@ class DeckQuiz extends React.Component {
     };
   };
 
+  // Reveal answer
+  revealAnswer = () => {
+    this.setState({
+      revealAnswer: true
+    });
+
+    // TODO: animate card flip
+  };
+
   // Get a random card and increment counter
   getRandomCard = () => {
     const cards = this.props.deck.questions;
     const randomIndex = getRandomInt(0, cards.length);
     this.setState({
+      revealAnswer: false,
       currentCard: cards[randomIndex],
       cardCounter: this.state.cardCounter + 1
     });
@@ -39,7 +52,7 @@ class DeckQuiz extends React.Component {
     const cards = this.props.deck.questions;
 
     // Update score if selected solution is true
-    if (isTrue) {
+    if (isTrue && !this.state.revealAnswer) {
       this.setState({ score: this.state.score + 1 });
     }
 
@@ -72,7 +85,7 @@ class DeckQuiz extends React.Component {
   };
 
   render() {
-    const { currentCard, cardCounter, score } = this.state;
+    const { currentCard, cardCounter, score, revealAnswer } = this.state;
 
     if (!currentCard) {
       return null;
@@ -92,9 +105,13 @@ class DeckQuiz extends React.Component {
         <Text>Progress: {cardCounter} / {NUM_QUESTIONS}</Text>
         <Text>Current score: {score}</Text>
 
-        <Text>{currentCard.text}</Text>
+        <TouchableOpacity onPress={this.revealAnswer}>
+          <Text>{currentCard.text}</Text>
+        </TouchableOpacity>
+
         {currentCard.answers.map((answer, index) => (
-          <Button key={index} onPress={() => this.submitCardAnswer(answer.isTrue)}>
+          <Button key={index} onPress={() => this.submitCardAnswer(answer.isTrue)}
+            style={revealAnswer && answer.isTrue ? { backgroundColor: red } : {}}>
             {answer.text}
           </Button>
         ))}
