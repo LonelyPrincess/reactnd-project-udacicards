@@ -32,7 +32,7 @@
                     },
                     {
                         "text": "God of the sky",
-                        "isTrue": true
+                        "isTrue": false
                     }
                 ]
             },
@@ -60,7 +60,7 @@
         "title": "Samurai",
         "questions": [
             {
-                "text": "Who were the Shinsemgumi meant to protect?",
+                "text": "Who were the Shinsengumi meant to protect?",
                 "answers": [
                     {
                         "text": "The Chōshū clan",
@@ -97,7 +97,7 @@
                 "text": "Who were allowed to join the Shinsengumi?",
                 "answers": [
                     {
-                        "text": "Anyone",
+                        "text": "Everyone",
                         "isTrue": true
                     },
                     {
