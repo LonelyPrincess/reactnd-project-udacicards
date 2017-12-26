@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Button from './Button';
 import QuizResults from './QuizResults';
 import { getRandomInt } from '../utils/Utils';
+import { clearLocalNotification, setLocalNotification } from '../utils/LocalNotifications';
 
 import { red } from '../utils/Colors';
 
@@ -86,6 +87,10 @@ class DeckQuiz extends React.Component {
   componentWillUpdate () {
     if (this.state.cardCounter === NUM_QUESTIONS) {
       this.props.navigation.setParams({ showingResults: true });
+
+      // Clear local notification
+      clearLocalNotification()
+        .then(setLocalNotification);
     }
   };
 
