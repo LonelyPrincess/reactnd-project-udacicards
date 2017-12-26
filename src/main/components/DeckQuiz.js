@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
@@ -17,7 +17,8 @@ class DeckQuiz extends React.Component {
     score: 0,
     cardCounter: 0,
     currentCard: null,
-    revealAnswer: false
+    revealAnswer: false,
+    animRotationDeg: new Animated.Value(0)
   };
 
   // Override title in page header
@@ -29,11 +30,15 @@ class DeckQuiz extends React.Component {
 
   // Reveal answer
   revealAnswer = () => {
-    this.setState({
-      revealAnswer: true
-    });
 
-    // TODO: animate card flip
+    // Animate card flip
+    Animated.timing(this.state.animRotationDeg, { duration: 1000, toValue: 1 })
+      .start(() => {
+        this.setState({
+          revealAnswer: true,
+          animRotationDeg: new Animated.Value(0)
+        });
+      });
   };
 
   // Get a random card and increment counter
@@ -100,14 +105,21 @@ class DeckQuiz extends React.Component {
       );
     }
 
+    const spin = this.state.animRotationDeg.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg']
+    });
+
     return (
       <View>
         <Text>Progress: {cardCounter} / {NUM_QUESTIONS}</Text>
         <Text>Current score: {score}</Text>
 
-        <TouchableOpacity onPress={this.revealAnswer}>
-          <Text>{currentCard.text}</Text>
-        </TouchableOpacity>
+        <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
+          <TouchableOpacity onPress={this.revealAnswer}>
+            <Text>{currentCard.text}</Text>
+          </TouchableOpacity>
+        </Animated.View>
 
         {currentCard.answers.map((answer, index) => (
           <Button key={index} onPress={() => this.submitCardAnswer(answer.isTrue)}
@@ -119,6 +131,13 @@ class DeckQuiz extends React.Component {
     );
   }
 }
+
+var styles = StyleSheet.create({
+  card: {
+    padding: 30,
+    borderWidth: 2
+  }
+});
 
 function mapStateToProps (state, { navigation }) {
   const { deckId } = navigation.state.params;
