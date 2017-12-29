@@ -1,10 +1,14 @@
 import { ToastAndroid } from 'react-native';
 
-/* Obtain difference between two dates in hours. */
+/**
+ * Get the number of days between today and specified date.
+ * @param {Date} date
+ * @return Days ellapsed since specified date.
+ */
 export function countDaysSinceDate (date) {
   const today = new Date();
 
-  // Calculate difference between the two dates in hours
+  // Calculate difference between the two dates in days
   const dayCount = (((((today - date) / 1000) / 60) / 60) / 60);
 
   return Math.round(dayCount);
@@ -25,6 +29,8 @@ export function displayToast (message) {
 
 /**
  * Get a random number between two values (max is exclusive).
+ * @param {number} min - Min value for the range.
+ * @param {number} max - Max value for the range.
  * @return Integer between min and max.
  */
 export function getRandomInt (min, max) {
