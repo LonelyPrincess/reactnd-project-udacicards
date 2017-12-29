@@ -3,9 +3,9 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { green, white } from '../utils/Colors';
 
-export default function Button ({ children, onPress, style = {} }) {
+export default function Button ({ children, onPress, style = {}, ...props }) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} {...props}>
       <Text style={[ styles.button, style ]}>{children}</Text>
     </TouchableOpacity>
   );
