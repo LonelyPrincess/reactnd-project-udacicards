@@ -3,7 +3,7 @@ import { NavigationActions } from 'react-navigation';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { white, green, orange, red } from '../utils/Colors';
+import { white, green, orange, red, gray, lightGray } from '../utils/Colors';
 import Button from './Button';
 
 export default function QuizResults ({ successRatio, onReplayClick, onBackClick }) {
@@ -29,14 +29,14 @@ export default function QuizResults ({ successRatio, onReplayClick, onBackClick 
   return (
     <View style={styles.container}>
       <Text style={styles.scoreTitle}>Your score is...</Text>
-      <Text style={styles.score}>{successRatio}%</Text>
+      <Text style={[ styles.score, { color: (successRatio < 50 ? red : green )}]}>{successRatio}%</Text>
       <Text style={styles.feedbackMessage}>{message}</Text>
-      <MaterialCommunityIcons name={icon} size={200} style={styles.icon}/>
+      <MaterialCommunityIcons name={icon} size={200} style={[ styles.icon, styles.withShadow ]}/>
       <View style={styles.buttonContainer}>
-        <Button onPress={onReplayClick}>
+        <Button onPress={onReplayClick} style={styles.withShadow}>
           <MaterialCommunityIcons name="replay" size={50} />
         </Button>
-        <Button onPress={onBackClick} style={{ backgroundColor: red }}>
+        <Button onPress={onBackClick} style={[ styles.withShadow, { backgroundColor: red } ]}>
           <MaterialCommunityIcons name="exit-to-app" size={50} />
         </Button>
       </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   icon: {
-    color: orange,
+    color: lightGray,
     marginTop: 10,
     marginBottom: 25
   },
@@ -69,9 +69,18 @@ const styles = StyleSheet.create({
   },
   scoreTitle: {
     fontSize: 16,
-    color: green
+    color: gray
   },
   feedbackMessage: {
     textAlign: 'center'
+  },
+  withShadow: {
+    shadowRadius: 3,
+    shadowOpacity: 0.8,
+    shadowColor: 'rgba(0,0,0,0.25)',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    }
   }
 });

@@ -4,6 +4,8 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 import { addNewDeck } from '../actions';
 import { displayToast } from '../utils/Utils';
+import { white, gray } from '../utils/Colors';
+
 import Button from './Button';
 
 class DeckForm extends React.Component {
@@ -17,12 +19,14 @@ class DeckForm extends React.Component {
     // Validate title is not empty
     if (!title) {
       displayToast('You need to specify a name for the deck!');
+      this.refs.inputTitle.focus();
       return;
     }
 
     // Check if there's already a deck with that name
     if (this.props.decks[title]) {
       displayToast('A deck with that name already exists!');
+      this.refs.inputTitle.focus();
       return;
     }
 
@@ -42,6 +46,7 @@ class DeckForm extends React.Component {
       <View style={styles.container}>
         <Text style={styles.title}>Choose a name for your new deck:</Text>
         <TextInput value={this.state.title} placeholder="Deck title"
+          ref="inputTitle" style={styles.input}
           onChangeText={(title) => this.setState({ title })} />
         <Button onPress={this.submitDeck}>Create deck</Button>
       </View>
@@ -52,11 +57,17 @@ class DeckForm extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30
+    padding: 30,
+    backgroundColor: white
   },
   title: {
     fontSize: 25,
-    textAlign: 'center'
+    color: gray,
+    textAlign: 'center',
+    marginBottom: 20
+  },
+  input: {
+    padding: 20
   }
 });
 
