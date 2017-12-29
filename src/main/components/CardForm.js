@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import Button from './Button';
 import { displayToast } from '../utils/Utils';
 import { addCardToDeck } from '../actions/index';
+import { white, gray, lightGray, green, red } from '../utils/Colors';
 
 class CardForm extends React.Component {
   state = {
@@ -90,36 +91,67 @@ class CardForm extends React.Component {
 
   render() {
     return (
-      <View>
-        <Text>Create a new card for current deck:</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Create a new card for current deck:</Text>
         <TextInput
-          ref="inputQuestion"
+          ref="inputQuestion" style={styles.input}
           value={this.state.question} placeholder="Question"
           onChangeText={(question) => this.setState({ question })} />
 
-        <Text>Write possible answers for your question (at least 2):</Text>
-
-        {this.state.answers.map((item, index) => (
-          <View key={index}>
-            <TextInput
-              ref={`inputAnswer${index + 1}`}
-              value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
-              onChangeText={(answer) => {
-                const updatedAnswers = this.state.answers;
-                updatedAnswers[index] = answer;
-                this.setState({ answers: updatedAnswers })}
-              } />
-            <TouchableOpacity onPress={() => this.setValidAnswer(index) }>
-              <MaterialIcons name={this.state.validAnswer === index? 'radio-button-checked' : 'radio-button-unchecked'} />
-            </TouchableOpacity>
-          </View>
-        ))}
+        <Text style={styles.subtitle}>Write possible answers for your question (at least 2):</Text>
+        {this.state.answers.map((item, index) => {
+          const isValidAnswer = this.state.validAnswer === index;
+          return (
+            <View key={index} style={styles.row}>
+              <TouchableOpacity onPress={() => this.setValidAnswer(index) }>
+                <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
+                  name={isValidAnswer ? 'check' : 'close'} />
+              </TouchableOpacity>
+              <TextInput
+                ref={`inputAnswer${index + 1}`} style={[ styles.input, { flexGrow: 1 } ]}
+                value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
+                onChangeText={(answer) => {
+                  const updatedAnswers = this.state.answers;
+                  updatedAnswers[index] = answer;
+                  this.setState({ answers: updatedAnswers })}
+                } />
+            </View>
+          );
+        })}
 
         <Button onPress={this.submitCard}>Add card</Button>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 30,
+    backgroundColor: white
+  },
+  title: {
+    fontSize: 25,
+    color: gray,
+    textAlign: 'center',
+    marginBottom: 20
+  },
+  subtitle: {
+    fontSize: 18,
+    color: lightGray,
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 20
+  },
+  input: {
+    padding: 20
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
+});
 
 function mapStateToProps (state, { navigation }) {
   const { deckId } = navigation.state.params;
