@@ -148,10 +148,14 @@ var styles = StyleSheet.create({
   card: {
     padding: 50,
     borderWidth: 5,
-    borderRadius: 10
+    borderRadius: 10,
+    flexGrow: 1,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   question: {
-    fontSize: 18,
+    fontSize: 25,
     textAlign: 'center'
   },
   row: {
