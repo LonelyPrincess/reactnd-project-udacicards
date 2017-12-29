@@ -8,7 +8,7 @@ import QuizResults from './QuizResults';
 import { getRandomInt } from '../utils/Utils';
 import { clearLocalNotification, setLocalNotification } from '../utils/LocalNotifications';
 
-import { red } from '../utils/Colors';
+import { red, white, lightGray, gray } from '../utils/Colors';
 
 const NUM_QUESTIONS = 10;
 
@@ -116,19 +116,21 @@ class DeckQuiz extends React.Component {
     });
 
     return (
-      <View>
-        <Text>Progress: {cardCounter} / {NUM_QUESTIONS}</Text>
-        <Text>Current score: {score}</Text>
+      <View style={styles.container}>
+        <View style={[ styles.row, { marginBottom: 25 } ]}>
+          <MaterialCommunityIcons name="timer" size={25} style={styles.timerIcon} />
+          <Text style={{ color: gray }}>{NUM_QUESTIONS - cardCounter + 1} cards left</Text>
+        </View>
 
         <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
           <TouchableOpacity onPress={this.revealAnswer}>
-            <Text>{currentCard.text}</Text>
+            <Text style={styles.question}>{currentCard.text}</Text>
           </TouchableOpacity>
         </Animated.View>
 
         {currentCard.answers.map((answer, index) => (
           <Button key={index} onPress={() => this.submitCardAnswer(answer.isTrue)}
-            style={revealAnswer && answer.isTrue ? { backgroundColor: red } : {}}>
+            style={revealAnswer && !answer.isTrue ? { backgroundColor: red } : {}}>
             {answer.text}
           </Button>
         ))}
@@ -138,9 +140,27 @@ class DeckQuiz extends React.Component {
 }
 
 var styles = StyleSheet.create({
-  card: {
+  container: {
+    flex: 1,
     padding: 30,
-    borderWidth: 2
+    backgroundColor: white
+  },
+  card: {
+    padding: 50,
+    borderWidth: 5,
+    borderRadius: 10
+  },
+  question: {
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  timerIcon: {
+    marginRight: 5,
+    color: lightGray
   }
 });
 
