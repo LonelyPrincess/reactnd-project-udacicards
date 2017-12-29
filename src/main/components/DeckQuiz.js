@@ -8,7 +8,7 @@ import QuizResults from './QuizResults';
 import { getRandomInt } from '../utils/Utils';
 import { clearLocalNotification, setLocalNotification } from '../utils/LocalNotifications';
 
-import { red, white, lightGray, gray } from '../utils/Colors';
+import { red, white, lightGray, gray, green, lightGreen } from '../utils/Colors';
 
 const NUM_QUESTIONS = 10;
 
@@ -115,6 +115,9 @@ class DeckQuiz extends React.Component {
       outputRange: ['0deg', '360deg']
     });
 
+    // TODO: trigger animation when question changes!!!!
+    // TODO: include reveal answer button
+
     return (
       <View style={styles.container}>
         <View style={[ styles.row, { marginBottom: 25 } ]}>
@@ -147,12 +150,14 @@ var styles = StyleSheet.create({
   },
   card: {
     padding: 50,
-    borderWidth: 5,
-    borderRadius: 10,
+    borderWidth: 3,
+    borderRadius: 5,
     flexGrow: 1,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderColor: green,
+    backgroundColor: lightGreen
   },
   question: {
     fontSize: 25,
