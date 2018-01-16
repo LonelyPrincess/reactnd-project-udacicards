@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 import { addNewDeck } from '../actions';
 import { displayToast } from '../utils/Utils';
@@ -36,8 +37,16 @@ class DeckForm extends React.Component {
         this.setState({ title: '' });
         displayToast(`New deck ${title} created!`);
 
-        // Redirect to deck list after creation
-        this.props.navigation.navigate('DeckList');
+        // Redirect to deck details after creation
+        // We also reset nav queue so it doesn't go back to create form after redirecting
+        const resetAction = NavigationActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Home' }),
+            NavigationActions.navigate({ routeName: 'DeckDetails', params: { deckId: title }})
+          ]
+        });
+        this.props.navigation.dispatch(resetAction);
       });
   };
 
