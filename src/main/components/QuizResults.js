@@ -21,10 +21,8 @@ class QuizResults extends React.Component {
   };
 
   onBackClick = () => {
-    console.log("Go back to deck details");
-    // TODO: fix this! route name and key are not the same, and this method works with keys
-    // we need to store deck quiz key to be able to jump back!
-    this.props.navigation.goBack('DeckQuiz');
+    const { quizScreenKey } = this.props.navigation.state.params;
+    this.props.navigation.goBack(quizScreenKey);
   };
 
   render () {

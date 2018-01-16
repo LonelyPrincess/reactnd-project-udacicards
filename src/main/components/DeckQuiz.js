@@ -87,7 +87,8 @@ class DeckQuiz extends React.Component {
     if (this.state.cardCounter === NUM_QUESTIONS) {
 
       this.props.navigation.navigate('QuizResults', {
-        successRatio: (this.state.score / NUM_QUESTIONS) * 100
+        successRatio: (this.state.score / NUM_QUESTIONS) * 100,
+        quizScreenKey: this.props.navigation.state.key
       });
 
       this.restartQuiz();
