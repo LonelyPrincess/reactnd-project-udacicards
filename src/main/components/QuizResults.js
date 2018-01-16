@@ -6,7 +6,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { white, green, orange, red, gray, lightGray } from '../utils/Colors';
 import Button from './Button';
 
-export default function QuizResults ({ successRatio, onReplayClick, onBackClick }) {
+// TODO: inherit component class and set header title for this view
+export default function QuizResults ({ navigation }) {
+  const { successRatio } = navigation.state.params;
+
+  // TODO: create new stateless component to display score
   let icon, message;
 
   if (successRatio < 40) {
@@ -25,6 +29,17 @@ export default function QuizResults ({ successRatio, onReplayClick, onBackClick 
     icon = 'emoticon-cool';
     message = `Wow! You sure are a master on this topic!`;
   }
+
+  const onReplayClick = () => {
+    navigation.goBack();
+  };
+
+  const onBackClick = () => {
+    console.log("Go back to deck details");
+    // TODO: fix this! route name and key are not the same, and this method works with keys
+    // we need to store deck quiz key to be able to jump back!
+    navigation.goBack('DeckQuiz');
+  };
 
   return (
     <View style={styles.container}>

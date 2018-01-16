@@ -25,7 +25,7 @@ class DeckQuiz extends React.Component {
   // Override title in page header
   static navigationOptions = ({ navigation }) => {
     return {
-      title: (navigation.state.params.showingResults ? 'Quiz results' : 'Quiz')
+      title: `${navigation.state.params.deckId} Quiz`
     };
   };
 
@@ -75,18 +75,22 @@ class DeckQuiz extends React.Component {
       cardCounter: 0,
       currentCard: null
     }, this.getRandomCard);
-
-    this.props.navigation.setParams({ showingResults: false });
   };
 
   componentWillMount () {
+    this.props.navigation.setParams({ deckId: this.props.deck.title });
     this.getRandomCard();
   }
 
-  // Change header when we need to show stats
+  // If all questions have been answered, show results and reset quiz data
   componentWillUpdate () {
     if (this.state.cardCounter === NUM_QUESTIONS) {
-      this.props.navigation.setParams({ showingResults: true });
+
+      this.props.navigation.navigate('QuizResults', {
+        successRatio: (this.state.score / NUM_QUESTIONS) * 100
+      });
+
+      this.restartQuiz();
 
       // Clear local notification
       clearLocalNotification()
@@ -99,15 +103,6 @@ class DeckQuiz extends React.Component {
 
     if (!currentCard) {
       return null;
-    }
-
-    if (cardCounter > NUM_QUESTIONS) {
-      return (
-        <QuizResults
-          successRatio={(score / NUM_QUESTIONS) * 100}
-          onBackClick={() => this.props.navigation.goBack()}
-          onReplayClick={this.restartQuiz} />
-      );
     }
 
     const spin = this.state.animRotationDeg.interpolate({

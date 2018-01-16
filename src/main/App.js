@@ -12,6 +12,7 @@ import DeckForm from './components/DeckForm';
 import DeckDetails from './components/DeckDetails';
 import CardForm from './components/CardForm';
 import DeckQuiz from './components/DeckQuiz';
+import QuizResults from './components/QuizResults';
 
 import CustomStatusBar from './components/CustomStatusBar';
 import { green, white } from './utils/Colors';
@@ -88,6 +89,15 @@ const MainNavigator = StackNavigator({
   },
   DeckQuiz: {
     screen: DeckQuiz,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: green
+      }
+    }
+  },
+  QuizResults: {
+    screen: QuizResults,
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
