@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { addNewDeck } from '../actions';
 import { displayToast } from '../utils/Utils';
-import { white, gray } from '../utils/Colors';
+import { white, gray, lightGray } from '../utils/Colors';
 
 import Button from './Button';
 
@@ -53,7 +54,10 @@ class DeckForm extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Choose a name for your new deck:</Text>
+        <View style={styles.row}>
+          <MaterialCommunityIcons size={40} name="human-handsup" style={styles.infoIcon} />
+          <Text style={styles.infoText}>Introduce the name for your new deck.</Text>
+        </View>
         <TextInput value={this.state.title} placeholder="Deck title"
           ref="inputTitle" style={styles.input}
           onChangeText={(title) => this.setState({ title })} />
@@ -69,14 +73,25 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: white
   },
-  title: {
-    fontSize: 25,
+  infoText: {
+    fontSize: 18,
+    flexShrink: 1,
     color: gray,
-    textAlign: 'center',
+    marginTop: 20,
     marginBottom: 20
   },
+  infoIcon: {
+    marginRight: 20,
+    color: lightGray
+  },
   input: {
-    padding: 20
+    padding: 20,
+    fontSize: 16
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
