@@ -115,19 +115,21 @@ class DeckQuiz extends React.Component {
       outputRange: ['0deg', '360deg']
     });
 
-    // TODO: trigger animation when question changes!!!!
-    // TODO: include reveal answer button
-
     return (
       <View style={styles.container}>
         <View style={[ styles.row, { marginBottom: 25 } ]}>
-          <MaterialCommunityIcons name="timer" size={25} style={styles.timerIcon} />
+          <MaterialCommunityIcons name="timer" size={20} style={styles.timerIcon} />
           <Text style={{ color: gray }}>{NUM_QUESTIONS - cardCounter + 1} cards left</Text>
         </View>
 
         <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
-          <TouchableOpacity onPress={this.revealAnswer}>
-            <Text style={styles.question}>{currentCard.text}</Text>
+          <TouchableOpacity onPress={this.revealAnswer}
+            style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flexGrow: 1, justifyContent: 'center' }}>
+              <Text style={styles.question}>{currentCard.text}</Text>
+            </View>
+            <MaterialCommunityIcons name="eye" size={30} style={styles.timerIcon} />
+            <Text style={{ color: lightGray, fontSize: 12, flexWrap: 'wrap' }}>Click card to reveal the answer</Text>
           </TouchableOpacity>
         </Animated.View>
 
@@ -149,18 +151,18 @@ var styles = StyleSheet.create({
     backgroundColor: white
   },
   card: {
-    padding: 50,
-    borderWidth: 3,
+    padding: 20,
     borderRadius: 5,
     flexGrow: 1,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: green,
     backgroundColor: lightGreen
   },
   question: {
+    color: gray,
     fontSize: 20,
+    flexWrap: 'wrap',
     textAlign: 'center'
   },
   row: {
