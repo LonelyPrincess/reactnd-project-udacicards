@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
 import QuizResults from './QuizResults';
-import { getRandomInt } from '../utils/Utils';
+import { getRandomInt, shuffleArray } from '../utils/Utils';
 import { clearLocalNotification, setLocalNotification } from '../utils/LocalNotifications';
 
 import { red, white, lightGray, gray, green, lightGreen } from '../utils/Colors';
@@ -46,9 +46,13 @@ class DeckQuiz extends React.Component {
   getRandomCard = () => {
     const cards = this.props.deck.questions;
     const randomIndex = getRandomInt(0, cards.length);
+
+    const selectedCard = cards[randomIndex];
+    shuffleArray(selectedCard.answers);
+
     this.setState({
       revealAnswer: false,
-      currentCard: cards[randomIndex],
+      currentCard: selectedCard,
       cardCounter: this.state.cardCounter + 1
     });
   };
@@ -156,7 +160,7 @@ var styles = StyleSheet.create({
     backgroundColor: lightGreen
   },
   question: {
-    fontSize: 25,
+    fontSize: 20,
     textAlign: 'center'
   },
   row: {
