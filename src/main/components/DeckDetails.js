@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { green, white, lightGreen, orange, red, gray } from '../utils/Colors';
+import { green, white, lightGreen, orange, red, gray, lightGray, lightYellow } from '../utils/Colors';
 import { countDaysSinceDate } from '../utils/Utils';
 
 import Button from './Button';
@@ -28,20 +28,17 @@ class DeckDetails extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={{ flexGrow: 1 }}>
-          <Text style={styles.title}>{deck.title}</Text>
-          <View style={styles.row}>
-            <MaterialCommunityIcons name="cards" size={25} style={{ color: green }} />
-            <Text style={{ marginLeft: 10 }}>{deck.questions.length} question cards</Text>
-          </View>
-          {dayCount && (
+        {dayCount && (
             <View style={styles.row}>
-              <MaterialCommunityIcons name="alert-outline" size={25} style={{ color: red }} />
-              <Text style={{ marginLeft: 10 }}>{dayCount} days since your last quiz!</Text>
+              <MaterialCommunityIcons name="alert-outline" size={20} style={{ color: orange }} />
+              <Text style={{ marginLeft: 5, color: gray }}>{dayCount} days since your last quiz!</Text>
             </View>
           )}
+        <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={styles.title}>{deck.title}</Text>
+          <Text style={styles.subtitle}>~ {deck.questions.length} cards ~</Text>
         </View>
-        <View>
+        <View style={{ marginTop: 10 }}>
           <Button onPress={() => this.props.navigation.navigate('CreateCard', { deckId: deck.title })}>Add card</Button>
           {deck.questions.length > 0 && (<Button style={{ backgroundColor: orange }}
             onPress={() => this.props.navigation.navigate('DeckQuiz', { deckId: deck.title })}>Start quiz</Button>)}
@@ -62,11 +59,18 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginBottom: 10
   },
+  subtitle: {
+    color: lightGray,
+    fontSize: 18
+  },
   row: {
-    flex: 1,
     flexDirection: 'row',
+    padding: 10,
+    borderRadius: 5,
     alignItems: 'center',
-    marginBottom: 5
+    justifyContent: 'center',
+    backgroundColor: lightYellow,
+    marginBottom: 10
   }
 });
 
