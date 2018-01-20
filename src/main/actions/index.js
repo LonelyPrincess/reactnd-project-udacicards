@@ -50,6 +50,7 @@ export function addNewDeck (title) {
 export function addCardToDeck (deck, card) {
   const updatedDeck = {
     [deck.title]: {
+      ...deck,
       questions: [
         ...deck.questions,
         card
