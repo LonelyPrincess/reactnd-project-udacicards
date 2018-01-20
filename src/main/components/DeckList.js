@@ -19,8 +19,9 @@ class DeckList extends React.Component {
       <View style={styles.container}>
         <FlatList
           data={Object.keys(deckList)}
-          renderItem={({ item }) => (
-            <DeckListItem deck={deckList[item]} navigation={this.props.navigation} />
+          renderItem={({ item, index }) => (
+            <DeckListItem deck={deckList[item]} index={index}
+              navigation={this.props.navigation} />
           )}
           keyExtractor={(item) => item}
           contentContainerStyle={{ padding: 30 }}

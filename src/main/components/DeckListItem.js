@@ -2,17 +2,19 @@ import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { green, white, lightGreen, orange, red, gray } from '../utils/Colors';
+import { green, white, lightGreen, orange, red, gray, lightYellow, lightGray } from '../utils/Colors';
 
-export default function DeckListItem({ deck, navigation }) {
+export default function DeckListItem({ deck, index, navigation }) {
+  const hasEvenIndex = index % 2 === 0;
   return (
-    <TouchableOpacity style={styles.deckCard}
+    <TouchableOpacity style={[styles.deckCard, styles.row, !hasEvenIndex ? { backgroundColor: lightYellow } : {}]}
       onPress={() => navigation.navigate('DeckDetails', { deckId: deck.title })}>
-      <Text style={styles.title}>{deck.title}</Text>
-      <View style={styles.row}>
-        <MaterialCommunityIcons name="cards" size={25} style={{ color: green }} />
-        <Text style={{ marginLeft: 10 }}>{deck.questions.length} question cards</Text>
+      <View style={{ flexGrow: 1, marginRight: 10 }}>
+        <Text style={styles.title}>{deck.title}</Text>
+        <Text style={{ color: lightGray }}>{deck.questions.length} cards</Text>
       </View>
+      <MaterialCommunityIcons name="cards-playing-outline" size={60}
+        style={{ color: (hasEvenIndex ? green : orange) + '50', transform: [{ rotateY: '180deg'}] }} />
     </TouchableOpacity>
   );
 }
@@ -21,20 +23,17 @@ const styles = StyleSheet.create({
   deckCard: {
     padding: 20,
     borderRadius: 5,
-    marginBottom: 15,
-    borderColor: green,
-    borderWidth: 3,
+    marginBottom: 20,
     backgroundColor: lightGreen
   },
   title: {
     color: gray,
-    fontSize: 25,
+    fontSize: 22,
     marginBottom: 10
   },
   row: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5
+    alignItems: 'center'
   }
 });
