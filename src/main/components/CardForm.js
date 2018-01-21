@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
 import { displayToast } from '../utils/Utils';
 import { addCardToDeck } from '../actions/index';
-import { white, gray, lightGray, green, red } from '../utils/Colors';
+import { white, gray, lightGray, green, red, lightYellow } from '../utils/Colors';
 
 class CardForm extends React.Component {
   state = {
@@ -16,7 +16,9 @@ class CardForm extends React.Component {
       '',
       ''
     ],
-    validAnswer: 0
+    validAnswer: 0,
+    activeForm: 'question',
+    inputToFocus: null
   };
 
   // Override title in page header
@@ -25,6 +27,15 @@ class CardForm extends React.Component {
       title: `Create new card`
     };
   };
+
+  componentDidUpdate () {
+    const { inputToFocus } = this.state;
+    if (inputToFocus && this.refs[inputToFocus]) {
+      console.log(`Focus on input ${inputToFocus}`);
+      this.refs[inputToFocus].focus();
+      this.setState({ inputToFocus: null });
+    }
+  }
 
   // Set an answer as the valid one
   setValidAnswer = (answerIndex) => {
@@ -37,7 +48,10 @@ class CardForm extends React.Component {
 
     if (!question) {
       displayToast('You need to write a question.');
-      this.refs.inputQuestion.focus();
+      this.setState({
+        activeForm: 'question',
+        inputToFocus: 'inputQuestion'
+      });
       return false;
     }
 
@@ -45,7 +59,10 @@ class CardForm extends React.Component {
       displayToast('You need to fill, at least, two answers for your question.');
       for (let i = 0; i < answers.length; i++) {
         if (!answers[i]) {
-          this.refs[`inputAnswer${i + 1}`].focus();
+          this.setState({
+            activeForm: 'answers',
+            inputToFocus: `inputAnswer${i + 1}`
+          });
           break;
         }
       }
@@ -54,7 +71,10 @@ class CardForm extends React.Component {
 
     if (!answers[validAnswer]) {
       displayToast('The right answer cannot be empty.');
-      this.refs[`inputAnswer${validAnswer + 1}`].focus();
+      this.setState({
+        activeForm: 'answers',
+        inputToFocus: `inputAnswer${validAnswer + 1}`
+      });
       return false;
     }
 
@@ -92,33 +112,47 @@ class CardForm extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Create a new card for current deck:</Text>
-        <TextInput
-          ref="inputQuestion" style={styles.input}
-          value={this.state.question} placeholder="Question"
-          onChangeText={(question) => this.setState({ question })} />
-
-        <Text style={styles.subtitle}>Write possible answers for your question (at least 2):</Text>
-        {this.state.answers.map((item, index) => {
-          const isValidAnswer = this.state.validAnswer === index;
-          return (
-            <View key={index} style={styles.row}>
-              <TouchableOpacity onPress={() => this.setValidAnswer(index) }>
-                <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
-                  name={isValidAnswer ? 'check' : 'close'} />
-              </TouchableOpacity>
-              <TextInput
-                ref={`inputAnswer${index + 1}`} style={[ styles.input, { flexGrow: 1 } ]}
-                value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
-                onChangeText={(answer) => {
-                  const updatedAnswers = this.state.answers;
-                  updatedAnswers[index] = answer;
-                  this.setState({ answers: updatedAnswers })}
-                } />
+        {this.state.activeForm === 'question' ? (
+          <View style={{ flexGrow: 1 }}>
+            <View style={[styles.row, styles.infoContainer]}>
+              <MaterialCommunityIcons size={40} name="human-handsup"
+                style={[styles.infoIcon, { marginLeft: 0, marginRight: 10 }]} />
+              <Text style={styles.infoText}>Introduce a question for your new card.</Text>
             </View>
-          );
-        })}
-
+            <TextInput
+              underlineColorAndroid="transparent"
+              ref="inputQuestion" style={styles.input}
+              value={this.state.question} placeholder="Question"
+              onChangeText={(question) => this.setState({ question })} />
+          </View>
+        ) : (
+          <View style={{ flexGrow: 1 }}>
+            <View style={[styles.row, styles.infoContainer]}>
+              <Text style={styles.infoText}>Introduce at least 2 possible answers to your question.</Text>
+              <MaterialCommunityIcons size={40} name="human-handsup" style={styles.infoIcon} />
+            </View>
+            {this.state.answers.map((item, index) => {
+              const isValidAnswer = this.state.validAnswer === index;
+              return (
+                <View key={index} style={[styles.row, { marginBottom: 10 }]}>
+                  <TouchableOpacity onPress={() => this.setValidAnswer(index) }>
+                    <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
+                      name={isValidAnswer ? 'check' : 'close'} />
+                  </TouchableOpacity>
+                  <TextInput
+                    underlineColorAndroid="transparent"
+                    ref={`inputAnswer${index + 1}`} style={[ styles.input, { flexGrow: 1 } ]}
+                    value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
+                    onChangeText={(answer) => {
+                      const updatedAnswers = this.state.answers;
+                      updatedAnswers[index] = answer;
+                      this.setState({ answers: updatedAnswers })}
+                    } />
+                </View>
+              );
+            })}
+          </View>
+        )}
         <Button onPress={this.submitCard}>Add card</Button>
       </View>
     );
@@ -145,11 +179,36 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   input: {
-    padding: 20
+    fontSize: 16,
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderColor: lightGray + '50'
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  infoText: {
+    fontSize: 18,
+    flexShrink: 1,
+    color: gray,
+    marginTop: 20,
+    marginBottom: 20,
+    flexWrap: 'wrap'
+  },
+  infoIcon: {
+    marginLeft: 20,
+    color: lightGray
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  infoContainer: {
+    marginBottom: 10
   }
 });
 
