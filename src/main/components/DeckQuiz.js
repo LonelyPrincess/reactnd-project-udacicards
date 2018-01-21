@@ -57,17 +57,35 @@ class DeckQuiz extends React.Component {
     });
   };
 
-  // Get a random card
+  // Check if answer is correct and increment score if needed
   submitCardAnswer = (isTrue) => {
     const cards = this.props.deck.questions;
 
     // Update score if selected solution is true
     if (isTrue && !this.state.revealAnswer) {
-      this.setState({ score: this.state.score + 1 });
+      this.setState(
+        { score: this.state.score + 1 },
+        this.goToNextQuestion);
+    } else {
+      this.goToNextQuestion();
     }
+  };
 
-    // Increment card counter and display next card
-    if (this.state.cardCounter <= NUM_QUESTIONS) {
+  // Move forward to the next question
+  // If all questions have been answered, show results instead
+  goToNextQuestion = () => {
+    if (this.state.cardCounter === NUM_QUESTIONS) {
+      this.props.navigation.navigate('QuizResults', {
+        successRatio: (this.state.score / NUM_QUESTIONS) * 100,
+        quizScreenKey: this.props.navigation.state.key
+      });
+
+      this.restartQuiz();
+
+      // Clear local notification
+      clearLocalNotification()
+        .then(setLocalNotification);
+    } else {
       this.getRandomCard();
     }
   };
@@ -85,23 +103,6 @@ class DeckQuiz extends React.Component {
     this.props.navigation.setParams({ deckId: this.props.deck.title });
     this.getRandomCard();
   }
-
-  // If all questions have been answered, show results and reset quiz data
-  componentWillUpdate () {
-    if (this.state.cardCounter === NUM_QUESTIONS) {
-
-      this.props.navigation.navigate('QuizResults', {
-        successRatio: (this.state.score / NUM_QUESTIONS) * 100,
-        quizScreenKey: this.props.navigation.state.key
-      });
-
-      this.restartQuiz();
-
-      // Clear local notification
-      clearLocalNotification()
-        .then(setLocalNotification);
-    }
-  };
 
   render() {
     const { currentCard, cardCounter, score, revealAnswer } = this.state;
