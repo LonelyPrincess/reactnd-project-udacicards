@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
 import { displayToast } from '../utils/Utils';
 import { addCardToDeck } from '../actions/index';
-import { white, gray, lightGray, green, red, lightYellow } from '../utils/Colors';
+import { white, gray, lightGray, green, red, orange } from '../utils/Colors';
 
 class CardForm extends React.Component {
   state = {
@@ -18,7 +18,8 @@ class CardForm extends React.Component {
     ],
     validAnswer: 0,
     activeForm: 'question',
-    inputToFocus: null
+    inputToFocus: null,
+    animOpacity: new Animated.Value(1)
   };
 
   // Override title in page header
@@ -37,6 +38,22 @@ class CardForm extends React.Component {
     }
   }
 
+  switchActiveForm = (newActiveForm) => {
+    if (!newActiveForm || newActiveForm === this.state.activeForm) {
+      return;
+    }
+
+    Animated.timing(this.state.animOpacity, { duration: 250, toValue: 0 })
+      .start(() => {
+        this.setState(
+          { activeForm: newActiveForm },
+          () => {
+            Animated.timing(this.state.animOpacity, { duration: 250, toValue: 1 }).start();
+          }
+        );
+      });
+  };
+
   // Set an answer as the valid one
   setValidAnswer = (answerIndex) => {
     this.setState({ validAnswer: answerIndex });
@@ -48,10 +65,9 @@ class CardForm extends React.Component {
 
     if (!question) {
       displayToast('You need to write a question.');
-      this.setState({
-        activeForm: 'question',
-        inputToFocus: 'inputQuestion'
-      });
+      this.setState(
+        { inputToFocus: 'inputQuestion' },
+        () => this.switchActiveForm('question'));
       return false;
     }
 
@@ -59,10 +75,9 @@ class CardForm extends React.Component {
       displayToast('You need to fill, at least, two answers for your question.');
       for (let i = 0; i < answers.length; i++) {
         if (!answers[i]) {
-          this.setState({
-            activeForm: 'answers',
-            inputToFocus: `inputAnswer${i + 1}`
-          });
+          this.setState(
+            { inputToFocus: `inputAnswer${i + 1}` },
+            () => this.switchActiveForm('answers'));
           break;
         }
       }
@@ -71,10 +86,9 @@ class CardForm extends React.Component {
 
     if (!answers[validAnswer]) {
       displayToast('The right answer cannot be empty.');
-      this.setState({
-        activeForm: 'answers',
-        inputToFocus: `inputAnswer${validAnswer + 1}`
-      });
+      this.setState(
+        { inputToFocus: `inputAnswer${validAnswer + 1}` },
+        () => this.switchActiveForm('answers'));
       return false;
     }
 
@@ -110,49 +124,69 @@ class CardForm extends React.Component {
   };
 
   render() {
+    const isQuestionFormActive = this.state.activeForm === 'question';
+
     return (
       <View style={styles.container}>
-        {this.state.activeForm === 'question' ? (
-          <View style={{ flexGrow: 1 }}>
-            <View style={[styles.row, styles.infoContainer]}>
-              <MaterialCommunityIcons size={40} name="human-handsup"
-                style={[styles.infoIcon, { marginLeft: 0, marginRight: 10 }]} />
-              <Text style={styles.infoText}>Introduce a question for your new card.</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
+          <TouchableWithoutFeedback onPress={() => this.switchActiveForm('question')}>
+            <View>
+              <Text style={{ color: isQuestionFormActive ? green : lightGray }}>
+                {'question'.toUpperCase()}
+              </Text>
             </View>
-            <TextInput
-              underlineColorAndroid="transparent"
-              ref="inputQuestion" style={styles.input}
-              value={this.state.question} placeholder="Question"
-              onChangeText={(question) => this.setState({ question })} />
-          </View>
-        ) : (
-          <View style={{ flexGrow: 1 }}>
-            <View style={[styles.row, styles.infoContainer]}>
-              <Text style={styles.infoText}>Introduce at least 2 possible answers to your question.</Text>
-              <MaterialCommunityIcons size={40} name="human-handsup" style={styles.infoIcon} />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => this.switchActiveForm('answers')}>
+            <View>
+              <Text style={{ color: !isQuestionFormActive ? green : lightGray }}>
+                {'answers'.toUpperCase()}
+              </Text>
             </View>
-            {this.state.answers.map((item, index) => {
-              const isValidAnswer = this.state.validAnswer === index;
-              return (
-                <View key={index} style={[styles.row, { marginBottom: 10 }]}>
-                  <TouchableOpacity onPress={() => this.setValidAnswer(index) }>
-                    <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
-                      name={isValidAnswer ? 'check' : 'close'} />
-                  </TouchableOpacity>
-                  <TextInput
-                    underlineColorAndroid="transparent"
-                    ref={`inputAnswer${index + 1}`} style={[ styles.input, { flexGrow: 1 } ]}
-                    value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
-                    onChangeText={(answer) => {
-                      const updatedAnswers = this.state.answers;
-                      updatedAnswers[index] = answer;
-                      this.setState({ answers: updatedAnswers })}
-                    } />
-                </View>
-              );
-            })}
-          </View>
-        )}
+          </TouchableWithoutFeedback>
+        </View>
+        <Animated.View style={{ flexGrow: 1, opacity: this.state.animOpacity }}>
+          {isQuestionFormActive ? (
+            <View>
+              <View style={[styles.row, styles.infoContainer]}>
+                <MaterialCommunityIcons size={40} name="human-handsup"
+                  style={[styles.infoIcon, { marginLeft: 0, marginRight: 10 }]} />
+                <Text style={styles.infoText}>Introduce a question for your new card.</Text>
+              </View>
+              <TextInput
+                underlineColorAndroid="transparent"
+                ref="inputQuestion" style={styles.input}
+                value={this.state.question} placeholder="Question"
+                onChangeText={(question) => this.setState({ question })} />
+            </View>
+          ) : (
+            <View>
+              <View style={[styles.row, styles.infoContainer]}>
+                <Text style={styles.infoText}>Introduce at least 2 possible answers to your question.</Text>
+                <MaterialCommunityIcons size={40} name="human-handsup" style={styles.infoIcon} />
+              </View>
+              {this.state.answers.map((item, index) => {
+                const isValidAnswer = this.state.validAnswer === index;
+                return (
+                  <View key={index} style={[styles.row, { marginBottom: 10 }]}>
+                    <TouchableOpacity onPress={() => this.setValidAnswer(index) }>
+                      <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
+                        name={isValidAnswer ? 'check' : 'close'} />
+                    </TouchableOpacity>
+                    <TextInput
+                      underlineColorAndroid="transparent"
+                      ref={`inputAnswer${index + 1}`} style={[ styles.input, { flexGrow: 1 } ]}
+                      value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
+                      onChangeText={(answer) => {
+                        const updatedAnswers = this.state.answers;
+                        updatedAnswers[index] = answer;
+                        this.setState({ answers: updatedAnswers })}
+                      } />
+                  </View>
+                );
+              })}
+            </View>
+          )}
+        </Animated.View>
         <Button onPress={this.submitCard}>Add card</Button>
       </View>
     );
