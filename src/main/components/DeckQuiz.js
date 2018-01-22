@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
@@ -123,9 +123,8 @@ class DeckQuiz extends React.Component {
           <Text style={{ color: gray }}>{NUM_QUESTIONS - cardCounter + 1} cards left</Text>
         </View>
 
-        <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
-          <TouchableOpacity onPress={!revealAnswer ? this.revealAnswer : null}
-            style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <TouchableWithoutFeedback onPress={!revealAnswer ? this.revealAnswer : null}>
+          <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
             <View style={{ flexGrow: 1, justifyContent: 'center' }}>
               <Text style={styles.question}>{currentCard.text}</Text>
             </View>
@@ -135,8 +134,8 @@ class DeckQuiz extends React.Component {
                 ? 'Click card to reveal the answer'
                 : 'The truth has been revealed'}
             </Text>
-          </TouchableOpacity>
-        </Animated.View>
+          </Animated.View>
+        </TouchableWithoutFeedback>
 
         {currentCard.answers.map((answer, index) => (
           <Button key={index} onPress={() => this.submitCardAnswer(answer.isTrue)}
