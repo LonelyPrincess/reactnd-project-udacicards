@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated, TouchableWithoutFee
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
+import InfoMessage from './InfoMessage';
 import CustomTextInput from './CustomTextInput';
 
 import { displayToast } from '../utils/Utils';
@@ -151,11 +152,9 @@ class CardForm extends React.Component {
         <Animated.View style={{ flexGrow: 1, opacity: this.state.animOpacity }}>
           {isQuestionFormActive ? (
             <View>
-              <View style={[styles.row, styles.infoContainer]}>
-                <MaterialCommunityIcons size={40} name="human-handsup"
-                  style={[styles.infoIcon, { marginLeft: 0, marginRight: 10 }]} />
-                <Text style={styles.infoText}>Introduce a question for your new card.</Text>
-              </View>
+              <InfoMessage>
+                Introduce a question for your new card.
+              </InfoMessage>
               <CustomTextInput
                 inputRef={(ref) => this.inputRef['question'] = ref}
                 value={this.state.question} placeholder="Question"
@@ -163,10 +162,9 @@ class CardForm extends React.Component {
             </View>
           ) : (
             <View>
-              <View style={[styles.row, styles.infoContainer]}>
-                <Text style={styles.infoText}>Introduce at least 2 possible answers to your question.</Text>
-                <MaterialCommunityIcons size={40} name="human-handsup" style={styles.infoIcon} />
-              </View>
+              <InfoMessage iconPos="left">
+                Introduce at least 2 possible answers to your question.
+              </InfoMessage>
               {this.state.answers.map((item, index) => {
                 const isValidAnswer = this.state.validAnswer === index;
                 return (
@@ -201,42 +199,10 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: white
   },
-  title: {
-    fontSize: 25,
-    color: gray,
-    textAlign: 'center',
-    marginBottom: 20
-  },
-  subtitle: {
-    fontSize: 18,
-    color: lightGray,
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 20
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  infoText: {
-    fontSize: 18,
-    flexShrink: 1,
-    color: gray,
-    marginTop: 20,
-    marginBottom: 20,
-    flexWrap: 'wrap'
-  },
-  infoIcon: {
-    marginLeft: 20,
-    color: lightGray
-  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  infoContainer: {
-    marginBottom: 10
   }
 });
 
