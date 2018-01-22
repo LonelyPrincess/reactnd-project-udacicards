@@ -8,7 +8,12 @@ import DeckForm from '../components/DeckForm';
 import { green, white } from '../constants/Colors';
 import * as SCREEN_KEYS from '../constants/Screens';
 
-/* --- Tabs --- */
+/**
+ * TabNavigator component to be displayed in the home screen. It will
+ * allow the user to switch between the deck list and the create deck form.
+ * @module navigators/HomeTabs
+ */
+
 const tabItems = {
   [SCREEN_KEYS.DECK_LIST]: {
     screen: DeckList,

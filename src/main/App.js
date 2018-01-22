@@ -5,10 +5,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import rootReducer from './reducers';
-
-import CustomStatusBar from './components/CustomStatusBar';
 import MainNavigator from './navigators/MainNavigator';
-
+import CustomStatusBar from './components/CustomStatusBar';
 import { setLocalNotification } from './utils/LocalNotifications';
 
 const store = createStore(

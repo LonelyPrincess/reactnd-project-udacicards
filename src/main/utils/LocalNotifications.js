@@ -2,11 +2,12 @@ import React from 'react';
 import { AsyncStorage } from 'react-native';
 import { Notifications, Permissions } from 'expo';
 
+// Key for notification flag in AsyncStorage
 const NOTIFICATION_KEY = 'UdaciCards::LocalNotification';
 
 /**
  * Cancel any previously scheduled notification for the app.
- * @return {Promise} 
+ * @return {Promise}
  */
 export function clearLocalNotification () {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
@@ -34,7 +35,9 @@ function createNotification () {
 }
 
 /**
- * Schedule a new notification to be triggered in 24 hours.
+ * Schedule a new notification to be triggered every 24 hours.
+ * If there's already a 'true' value in the assigned key in the storage,
+ * we'll skip this process as the notification is already scheduled.
  */
 export function setLocalNotification () {
   AsyncStorage.getItem(NOTIFICATION_KEY)
@@ -52,7 +55,7 @@ export function setLocalNotification () {
               tomorrow.setHours(20);
               tomorrow.setMinutes(0);
 
-              console.log("Notification must trigger on " + tomorrow);
+              console.log(`Notification must trigger on ${tomorrow}`);
 
               const scheduleSettings = {
                 time: tomorrow,

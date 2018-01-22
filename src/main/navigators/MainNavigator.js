@@ -9,6 +9,11 @@ import QuizResults from '../components/QuizResults';
 import { green, white } from '../constants/Colors';
 import * as SCREEN_KEYS from '../constants/Screens';
 
+/**
+ * Stack navigator to manage the navigation flow in the app.
+ * @module/MainNavigator
+ */
+
 const defaultNavigationOptions = {
   headerTintColor: white,
   headerStyle: {
@@ -16,7 +21,6 @@ const defaultNavigationOptions = {
   }
 };
 
-/* --- Stack --- */
 const MainNavigator = StackNavigator({
   [SCREEN_KEYS.MAIN]: {
     screen: HomeTabs
@@ -33,7 +37,7 @@ const MainNavigator = StackNavigator({
     navigationOptions: {
       ...defaultNavigationOptions,
       title: 'Add new card'
-    }  
+    }
   },
   [SCREEN_KEYS.QUIZ]: {
     screen: DeckQuiz,
