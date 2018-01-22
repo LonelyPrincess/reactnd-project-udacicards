@@ -26,21 +26,20 @@ class DeckQuiz extends React.Component {
   // Override title in page header
   static navigationOptions = ({ navigation }) => {
     return {
-      title: `${navigation.state.params.deckId} Quiz`
+      headerTitle: `${navigation.state.params.deckId} Quiz`
     };
   };
 
-  // Reveal answer
+  // Flip card and reveal answers
   revealAnswer = () => {
+    const flipAnimation = Animated.timing(this.state.animRotationDeg, { duration: 1000, toValue: 1 });
 
-    // Animate card flip
-    Animated.timing(this.state.animRotationDeg, { duration: 1000, toValue: 1 })
-      .start(() => {
-        this.setState({
-          revealAnswer: true,
-          animRotationDeg: new Animated.Value(0)
-        });
+    flipAnimation.start(() => {
+      this.setState({
+        revealAnswer: true,
+        animRotationDeg: new Animated.Value(0)
       });
+    });
   };
 
   // Get a random card and increment counter
@@ -125,13 +124,17 @@ class DeckQuiz extends React.Component {
         </View>
 
         <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
-          <TouchableOpacity onPress={this.revealAnswer}
+          <TouchableOpacity onPress={!revealAnswer ? this.revealAnswer : null}
             style={{ alignItems: 'center', justifyContent: 'center' }}>
             <View style={{ flexGrow: 1, justifyContent: 'center' }}>
               <Text style={styles.question}>{currentCard.text}</Text>
             </View>
-            <MaterialCommunityIcons name="eye" size={30} style={styles.timerIcon} />
-            <Text style={{ color: lightGray, fontSize: 12, flexWrap: 'wrap' }}>Click card to reveal the answer</Text>
+            <MaterialCommunityIcons name={!revealAnswer ? 'eye' : 'eye-outline'} size={30} style={styles.timerIcon} />
+            <Text style={{ color: lightGray, fontSize: 12, flexWrap: 'wrap' }}>
+              {!revealAnswer
+                ? 'Click card to reveal the answer'
+                : 'The truth has been revealed'}
+            </Text>
           </TouchableOpacity>
         </Animated.View>
 
