@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { white, green, red, gray, lightGray } from '../utils/Colors';
+import { white, green, red, gray, lightGray } from '../constants/Colors';
 
 export default function ScoreDisplay ({ successRatio }) {
   let icon, message;
@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     color: gray
   },
   feedbackMessage: {
-    textAlign: 'center'
+    textAlign: 'center',
+    flexShrink: 1
   },
   withShadow: {
     shadowRadius: 3,

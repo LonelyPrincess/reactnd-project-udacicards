@@ -8,7 +8,7 @@ import QuizResults from './QuizResults';
 import { getRandomInt, shuffleArray } from '../utils/Utils';
 import { clearLocalNotification, setLocalNotification } from '../utils/LocalNotifications';
 
-import { red, white, lightGray, gray, green, lightGreen } from '../utils/Colors';
+import { red, white, lightGray, gray, green, lightGreen } from '../constants/Colors';
 
 const NUM_QUESTIONS = 10;
 

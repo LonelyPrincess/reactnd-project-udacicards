@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { addNewDeck } from '../actions';
 import { displayToast } from '../utils/Utils';
-import { white, gray, lightGray } from '../utils/Colors';
+import { white, gray, lightGray } from '../constants/Colors';
 
 import Button from './Button';
 import CustomTextInput from './CustomTextInput';

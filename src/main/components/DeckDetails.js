@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { green, white, lightGreen, orange, red, gray, lightGray, lightYellow } from '../utils/Colors';
+import { green, white, lightGreen, orange, red, gray, lightGray, lightYellow } from '../constants/Colors';
 import { countDaysSinceDate } from '../utils/Utils';
 
 import Button from './Button';

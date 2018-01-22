@@ -8,7 +8,7 @@ import CustomTextInput from './CustomTextInput';
 
 import { displayToast } from '../utils/Utils';
 import { addCardToDeck } from '../actions/index';
-import { white, gray, lightGray, green, red, orange } from '../utils/Colors';
+import { white, gray, lightGray, green, red, orange } from '../constants/Colors';
 
 class CardForm extends React.Component {
   state = {

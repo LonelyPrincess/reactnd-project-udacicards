@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { green, white, lightGreen, orange, red, gray, lightYellow, lightGray } from '../utils/Colors';
+import { green, white, lightGreen, orange, red, gray, lightYellow, lightGray } from '../constants/Colors';
 
 export default function DeckListItem({ deck, index, navigation }) {
   const hasEvenIndex = index % 2 === 0;

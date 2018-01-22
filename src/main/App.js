@@ -15,7 +15,7 @@ import DeckQuiz from './components/DeckQuiz';
 import QuizResults from './components/QuizResults';
 
 import CustomStatusBar from './components/CustomStatusBar';
-import { green, white } from './utils/Colors';
+import { green, white } from './constants/Colors';
 import { setLocalNotification } from './utils/LocalNotifications';
 
 const store = createStore(

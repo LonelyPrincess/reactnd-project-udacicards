@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 
-import { lightGray } from '../utils/Colors';
+import { lightGray } from '../constants/Colors';
 
 export default function CustomTextInput ({ inputRef, value, placeholder, onChangeText, style = {}, ...props }) {
   return (

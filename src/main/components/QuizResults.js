@@ -3,7 +3,7 @@ import { NavigationActions } from 'react-navigation';
 import { View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { white, red } from '../utils/Colors';
+import { white, red } from '../constants/Colors';
 import Button from './Button';
 import ScoreDisplay from './ScoreDisplay';
 

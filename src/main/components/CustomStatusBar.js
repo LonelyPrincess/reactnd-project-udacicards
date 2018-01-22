@@ -2,7 +2,7 @@ import React from 'react';
 import { Constants } from 'expo';
 import { View, StatusBar, StyleSheet } from 'react-native';
 
-import { green } from '../utils/Colors';
+import { green } from '../constants/Colors';
 
 export default function CustomStatusBar () {
   return (
