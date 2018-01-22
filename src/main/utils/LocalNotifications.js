@@ -4,11 +4,19 @@ import { Notifications, Permissions } from 'expo';
 
 const NOTIFICATION_KEY = 'UdaciCards::LocalNotification';
 
+/**
+ * Cancel any previously scheduled notification for the app.
+ * @return {Promise} 
+ */
 export function clearLocalNotification () {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync);
 }
 
+/**
+ * Create a raw object with data on the notification to create.
+ * @return {object} Notification data.
+ */
 function createNotification () {
   return {
     title: `Review your content now! ÒwÓ`,
@@ -25,6 +33,9 @@ function createNotification () {
   };
 }
 
+/**
+ * Schedule a new notification to be triggered in 24 hours.
+ */
 export function setLocalNotification () {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
