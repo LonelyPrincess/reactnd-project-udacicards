@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
+import CustomTextInput from './CustomTextInput';
+
 import { displayToast } from '../utils/Utils';
 import { addCardToDeck } from '../actions/index';
 import { white, gray, lightGray, green, red, orange } from '../utils/Colors';
@@ -22,6 +24,8 @@ class CardForm extends React.Component {
     animOpacity: new Animated.Value(1)
   };
 
+  inputRef = {};
+
   // Override title in page header
   static navigationOptions = () => {
     return {
@@ -31,9 +35,9 @@ class CardForm extends React.Component {
 
   componentDidUpdate () {
     const { inputToFocus } = this.state;
-    if (inputToFocus && this.refs[inputToFocus]) {
+    if (inputToFocus && this.inputRef[inputToFocus]) {
       console.log(`Focus on input ${inputToFocus}`);
-      this.refs[inputToFocus].focus();
+      this.inputRef[inputToFocus].focus();
       this.setState({ inputToFocus: null });
     }
   }
@@ -66,7 +70,7 @@ class CardForm extends React.Component {
     if (!question) {
       displayToast('You need to write a question.');
       this.setState(
-        { inputToFocus: 'inputQuestion' },
+        { inputToFocus: 'question' },
         () => this.switchActiveForm('question'));
       return false;
     }
@@ -76,7 +80,7 @@ class CardForm extends React.Component {
       for (let i = 0; i < answers.length; i++) {
         if (!answers[i]) {
           this.setState(
-            { inputToFocus: `inputAnswer${i + 1}` },
+            { inputToFocus: `answer${i + 1}` },
             () => this.switchActiveForm('answers'));
           break;
         }
@@ -87,7 +91,7 @@ class CardForm extends React.Component {
     if (!answers[validAnswer]) {
       displayToast('The right answer cannot be empty.');
       this.setState(
-        { inputToFocus: `inputAnswer${validAnswer + 1}` },
+        { inputToFocus: `answer${validAnswer + 1}` },
         () => this.switchActiveForm('answers'));
       return false;
     }
@@ -152,9 +156,8 @@ class CardForm extends React.Component {
                   style={[styles.infoIcon, { marginLeft: 0, marginRight: 10 }]} />
                 <Text style={styles.infoText}>Introduce a question for your new card.</Text>
               </View>
-              <TextInput
-                underlineColorAndroid="transparent"
-                ref="inputQuestion" style={styles.input}
+              <CustomTextInput
+                inputRef={(ref) => this.inputRef['question'] = ref}
                 value={this.state.question} placeholder="Question"
                 onChangeText={(question) => this.setState({ question })} />
             </View>
@@ -172,9 +175,8 @@ class CardForm extends React.Component {
                       <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
                         name={isValidAnswer ? 'check' : 'close'} />
                     </TouchableOpacity>
-                    <TextInput
-                      underlineColorAndroid="transparent"
-                      ref={`inputAnswer${index + 1}`} style={[ styles.input, { flexGrow: 1 } ]}
+                    <CustomTextInput style={{ flexGrow: 1 }}
+                      inputRef={(ref) => this.inputRef[`answer${index + 1}`] = ref}
                       value={this.state.answers[index]} placeholder={`Answer ${index + 1}`}
                       onChangeText={(answer) => {
                         const updatedAnswers = this.state.answers;
@@ -211,14 +213,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 20
-  },
-  input: {
-    fontSize: 16,
-    padding: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderColor: lightGray + '50'
   },
   row: {
     flexDirection: 'row',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -9,11 +9,14 @@ import { displayToast } from '../utils/Utils';
 import { white, gray, lightGray } from '../utils/Colors';
 
 import Button from './Button';
+import CustomTextInput from './CustomTextInput';
 
 class DeckForm extends React.Component {
   state = {
     title: ''
   };
+
+  inputRef = {};
 
   submitDeck = () => {
     const { title } = this.state;
@@ -21,14 +24,14 @@ class DeckForm extends React.Component {
     // Validate title is not empty
     if (!title) {
       displayToast('You need to specify a name for the deck!');
-      this.refs.inputTitle.focus();
+      this.inputRef.title.focus();
       return;
     }
 
     // Check if there's already a deck with that name
     if (this.props.decks[title]) {
       displayToast('A deck with that name already exists!');
-      this.refs.inputTitle.focus();
+      this.inputRef.title.focus();
       return;
     }
 
@@ -54,13 +57,16 @@ class DeckForm extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.row}>
-          <MaterialCommunityIcons size={40} name="human-handsup" style={styles.infoIcon} />
-          <Text style={styles.infoText}>Introduce the name for your new deck.</Text>
+        <View style={{ flexGrow: 1 }}>
+          <View style={styles.row}>
+            <MaterialCommunityIcons size={40} name="human-handsup" style={styles.infoIcon} />
+            <Text style={styles.infoText}>Introduce the name for your new deck.</Text>
+          </View>
+          <CustomTextInput 
+            inputRef={(ref) => this.inputRef['title'] = ref}
+            value={this.state.title} placeholder="Deck title"
+            onChangeText={(title) => this.setState({ title })} />
         </View>
-        <TextInput value={this.state.title} placeholder="Deck title"
-          ref="inputTitle" style={styles.input}
-          onChangeText={(title) => this.setState({ title })} />
         <Button onPress={this.submitDeck}>Create deck</Button>
       </View>
     );
@@ -83,10 +89,6 @@ const styles = StyleSheet.create({
   infoIcon: {
     marginRight: 20,
     color: lightGray
-  },
-  input: {
-    padding: 20,
-    fontSize: 16
   },
   row: {
     flexDirection: 'row',
