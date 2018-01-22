@@ -27,13 +27,6 @@ class CardForm extends React.Component {
 
   inputRef = {};
 
-  // Override title in page header
-  static navigationOptions = () => {
-    return {
-      title: `Create new card`
-    };
-  };
-
   componentDidUpdate () {
     const { inputToFocus } = this.state;
     if (inputToFocus && this.inputRef[inputToFocus]) {

@@ -7,18 +7,12 @@ import { green, white, lightGreen, orange, red, gray, lightGray, lightYellow } f
 import { countDaysSinceDate } from '../utils/Utils';
 
 import Button from './Button';
+import * as SCREEN_KEYS from '../constants/Screens';
 
 class DeckDetails extends React.Component {
 
-  // Override title in page header
-  static navigationOptions = () => {
-    return {
-      title: `Deck details`
-    };
-  };
-
   render() {
-    const { deck } = this.props;
+    const { deck, navigation } = this.props;
 
     if (!deck) {
       return null;
@@ -39,9 +33,9 @@ class DeckDetails extends React.Component {
           <Text style={styles.subtitle}>~ {deck.questions.length} cards ~</Text>
         </View>
         <View style={{ marginTop: 10 }}>
-          <Button onPress={() => this.props.navigation.navigate('CreateCard', { deckId: deck.title })}>Add card</Button>
+          <Button onPress={() => navigation.navigate(SCREEN_KEYS.CARD_FORM, { deckId: deck.title })}>Add card</Button>
           {deck.questions.length > 0 && (<Button style={{ backgroundColor: orange }}
-            onPress={() => this.props.navigation.navigate('DeckQuiz', { deckId: deck.title })}>Start quiz</Button>)}
+            onPress={() => navigation.navigate(SCREEN_KEYS.QUIZ, { deckId: deck.title })}>Start quiz</Button>)}
         </View>
       </View>
     );

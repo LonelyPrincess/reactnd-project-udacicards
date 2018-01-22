@@ -8,6 +8,7 @@ import QuizResults from './QuizResults';
 import { getRandomInt, shuffleArray } from '../utils/Utils';
 import { clearLocalNotification, setLocalNotification } from '../utils/LocalNotifications';
 
+import * as SCREEN_KEYS from '../constants/Screens';
 import { red, white, lightGray, gray, green, lightGreen } from '../constants/Colors';
 
 const NUM_QUESTIONS = 10;
@@ -75,7 +76,7 @@ class DeckQuiz extends React.Component {
   // If all questions have been answered, show results instead
   goToNextQuestion = () => {
     if (this.state.cardCounter === NUM_QUESTIONS) {
-      this.props.navigation.navigate('QuizResults', {
+      this.props.navigation.navigate(SCREEN_KEYS.QUIZ_RESULTS, {
         successRatio: (this.state.score / NUM_QUESTIONS) * 100,
         quizScreenKey: this.props.navigation.state.key
       });

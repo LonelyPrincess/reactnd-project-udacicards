@@ -11,6 +11,8 @@ import Button from './Button';
 import InfoMessage from './InfoMessage';
 import CustomTextInput from './CustomTextInput';
 
+import * as SCREEN_KEYS from '../constants/Screens';
+
 class DeckForm extends React.Component {
   state = {
     title: ''
@@ -46,8 +48,8 @@ class DeckForm extends React.Component {
         const resetAction = NavigationActions.reset({
           index: 1,
           actions: [
-            NavigationActions.navigate({ routeName: 'Home' }),
-            NavigationActions.navigate({ routeName: 'DeckDetails', params: { deckId: title }})
+            NavigationActions.navigate({ routeName: SCREEN_KEYS.MAIN }),
+            NavigationActions.navigate({ routeName: SCREEN_KEYS.DECK_DETAILS, params: { deckId: title }})
           ]
         });
         this.props.navigation.dispatch(resetAction);

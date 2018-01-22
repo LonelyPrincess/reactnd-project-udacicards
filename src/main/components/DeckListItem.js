@@ -2,13 +2,14 @@ import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import * as SCREEN_KEYS from '../constants/Screens';
 import { green, white, lightGreen, orange, red, gray, lightYellow, lightGray } from '../constants/Colors';
 
 export default function DeckListItem({ deck, index, navigation }) {
   const hasEvenIndex = index % 2 === 0;
   return (
     <TouchableOpacity style={[styles.deckCard, styles.row, !hasEvenIndex ? { backgroundColor: lightYellow } : {}]}
-      onPress={() => navigation.navigate('DeckDetails', { deckId: deck.title })}>
+      onPress={() => navigation.navigate(SCREEN_KEYS.DECK_DETAILS, { deckId: deck.title })}>
       <View style={{ flexGrow: 1, marginRight: 10 }}>
         <Text style={styles.title}>{deck.title}</Text>
         <Text style={{ color: lightGray }}>{deck.questions.length} cards</Text>

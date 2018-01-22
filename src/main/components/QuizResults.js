@@ -9,13 +9,6 @@ import ScoreDisplay from './ScoreDisplay';
 
 class QuizResults extends React.Component {
 
-  // Override title in page header
-  static navigationOptions = () => {
-    return {
-      title: `Quiz results`
-    };
-  };
-
   onReplayClick = () => {
     this.props.navigation.goBack();
   };
