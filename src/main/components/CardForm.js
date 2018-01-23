@@ -185,7 +185,7 @@ class CardForm extends React.Component {
                 const isValidAnswer = this.state.validAnswer === index;
                 return (
                   <View key={index} style={[styles.row, { marginBottom: 10 }]}>
-                    <TouchableOpacity onPress={() => this.setState({ validAnswer: answerIndex }) }>
+                    <TouchableOpacity onPress={() => this.setState({ validAnswer: index }) }>
                       <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
                         name={isValidAnswer ? 'check' : 'close'} />
                     </TouchableOpacity>
