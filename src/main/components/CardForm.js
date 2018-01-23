@@ -9,8 +9,13 @@ import CustomTextInput from './CustomTextInput';
 
 import { displayToast } from '../utils/Utils';
 import { addCardToDeck } from '../actions/index';
-import { white, gray, lightGray, green, red, orange } from '../constants/Colors';
+import { white, lightGray, green, red } from '../constants/Colors';
 
+/**
+ * Component that manages a form to create a new card and include it into a deck.
+ *
+ * @module components/CardForm
+ */
 class CardForm extends React.Component {
   state = {
     question: '',
@@ -25,8 +30,14 @@ class CardForm extends React.Component {
     animOpacity: new Animated.Value(1)
   };
 
+  // Object to store refs to directly access form inputs
   inputRef = {};
 
+  /**
+   * Handler for 'component did update' lifecycle event. If the state contains
+   * the name of an input to focus, we use its reference to place the user on
+   * that field.
+   */
   componentDidUpdate () {
     const { inputToFocus } = this.state;
     if (inputToFocus && this.inputRef[inputToFocus]) {
@@ -36,6 +47,13 @@ class CardForm extends React.Component {
     }
   }
 
+  /**
+   * Performs an animation to switch between the two sections of the form: the
+   * question section and the answers section.
+   *
+   * @param {string} newActiveForm - String that identifies the section we want
+   *  to show on screen.
+   */
   switchActiveForm = (newActiveForm) => {
     if (!newActiveForm || newActiveForm === this.state.activeForm) {
       return;
@@ -52,12 +70,10 @@ class CardForm extends React.Component {
       });
   };
 
-  // Set an answer as the valid one
-  setValidAnswer = (answerIndex) => {
-    this.setState({ validAnswer: answerIndex });
-  };
-
-  // Validate that we have the minimal required data before adding card to the deck
+  /**
+   * Check if the user has introduced the required data to create a card.
+   * @return {boolean} - Returns 'false' if an error ocurred during validation.
+   */
   validateCard = () => {
     const { question, answers, validAnswer } = this.state;
 
@@ -93,7 +109,10 @@ class CardForm extends React.Component {
     return true;
   };
 
-  // If form passes validation, add card to deck
+  /**
+   * If form validation succeeds, add new card to the deck and go back to deck
+   * details screen.
+   */
   submitCard = () => {
 
     if (!this.validateCard()) {
@@ -121,6 +140,10 @@ class CardForm extends React.Component {
     displayToast('New card added to deck!');
   };
 
+  /**
+   * Returns the view of the component.
+   * @return JSX template for the component.
+   */
   render() {
     const isQuestionFormActive = this.state.activeForm === 'question';
 
@@ -162,7 +185,7 @@ class CardForm extends React.Component {
                 const isValidAnswer = this.state.validAnswer === index;
                 return (
                   <View key={index} style={[styles.row, { marginBottom: 10 }]}>
-                    <TouchableOpacity onPress={() => this.setValidAnswer(index) }>
+                    <TouchableOpacity onPress={() => this.setState({ validAnswer: answerIndex }) }>
                       <MaterialIcons size={30} style={{ marginRight: 20, color: (isValidAnswer ? green : red) }}
                         name={isValidAnswer ? 'check' : 'close'} />
                     </TouchableOpacity>
@@ -186,6 +209,8 @@ class CardForm extends React.Component {
   }
 }
 
+/* --- Component styles ---------------------------------------------------- */
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -198,6 +223,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+/* --- Redux mapping methods ----------------------------------------------- */
 
 function mapStateToProps (state, { navigation }) {
   const { deckId } = navigation.state.params;

@@ -9,10 +9,19 @@ import { getRandomInt, shuffleArray } from '../utils/Utils';
 import { clearLocalNotification, setLocalNotification } from '../utils/LocalNotifications';
 
 import * as SCREEN_KEYS from '../constants/Screens';
-import { red, white, lightGray, gray, green, lightGreen } from '../constants/Colors';
+import { red, white, lightGray, gray, lightGreen } from '../constants/Colors';
 
+// Fixed length for quizzes
 const NUM_QUESTIONS = 10;
 
+/**
+ * This component manages the interface and functionality for quizzes based
+ * on whichever deck the user chose previously.
+ *
+ * The user has to answer to 10 questions in order to complete a quiz.
+ *
+ * @module components/DeckQuiz
+ */
 class DeckQuiz extends React.Component {
 
   state = {
@@ -31,7 +40,9 @@ class DeckQuiz extends React.Component {
     };
   };
 
-  // Flip card and reveal answers
+  /**
+   * Flip card and reveal which answers are wrong and which is the right one.
+   */
   revealAnswer = () => {
     const flipAnimation = Animated.timing(this.state.animRotationDeg, { duration: 1000, toValue: 1 });
 
@@ -43,7 +54,9 @@ class DeckQuiz extends React.Component {
     });
   };
 
-  // Get a random card and increment counter
+  /**
+   * Get a random card from the deck and increment counter.
+   */
   getRandomCard = () => {
     const cards = this.props.deck.questions;
     const randomIndex = getRandomInt(0, cards.length);
@@ -63,7 +76,10 @@ class DeckQuiz extends React.Component {
       });
   };
 
-  // Check if answer is correct and increment score if needed
+  /**
+   * Check if answer is correct and increment score if needed.
+   * @param {boolean} isTrue - Determines whether current answer is right or not.
+   */
   submitCardAnswer = (isTrue) => {
     const cards = this.props.deck.questions;
 
@@ -77,8 +93,10 @@ class DeckQuiz extends React.Component {
     }
   };
 
-  // Move forward to the next question
-  // If all questions have been answered, show results instead
+  /**
+   * Move forward to the next question. If all questions have been answered,
+   * show quiz results instead.
+   */
   goToNextQuestion = () => {
     if (this.state.cardCounter === NUM_QUESTIONS) {
       this.props.navigation.navigate(SCREEN_KEYS.QUIZ_RESULTS, {
@@ -88,7 +106,7 @@ class DeckQuiz extends React.Component {
 
       this.restartQuiz();
 
-      // Clear local notification
+      // Re-schedule local notifications once the quiz is over
       clearLocalNotification()
         .then(setLocalNotification);
     } else {
@@ -96,7 +114,9 @@ class DeckQuiz extends React.Component {
     }
   };
 
-  // Reset state and start over
+  /**
+   * Reset state and start over.
+   */
   restartQuiz = () => {
     this.setState({
       score: 0,
@@ -105,11 +125,19 @@ class DeckQuiz extends React.Component {
     }, this.getRandomCard);
   };
 
+  /**
+   * Handler for 'component will mount' lifecycle event. A random card will be
+   * loaded before rendering the component.
+   */
   componentWillMount () {
     this.props.navigation.setParams({ deckId: this.props.deck.title });
     this.getRandomCard();
   }
 
+  /**
+   * Returns the view of the component.
+   * @returns JSX template for the component.
+   */
   render() {
     const { currentCard, cardCounter, score, revealAnswer } = this.state;
 
@@ -117,7 +145,7 @@ class DeckQuiz extends React.Component {
       return null;
     }
 
-    const spin = this.state.animRotationDeg.interpolate({
+    const flip = this.state.animRotationDeg.interpolate({
       inputRange: [0, 1],
       outputRange: ['0deg', '360deg']
     });
@@ -136,7 +164,7 @@ class DeckQuiz extends React.Component {
 
         <Animated.View style={{ flexGrow: 1, transform: [{ translateX: slide }] }}>
           <TouchableWithoutFeedback onPress={!revealAnswer ? this.revealAnswer : null}>
-            <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
+            <Animated.View style={[ styles.card, { transform: [ { rotateY: flip } ] }]}>
               <View style={{ flexGrow: 1, justifyContent: 'center' }}>
                 <Text style={styles.question}>{currentCard.text}</Text>
               </View>
@@ -160,6 +188,8 @@ class DeckQuiz extends React.Component {
     );
   }
 }
+
+/* --- Component styles ---------------------------------------------------- */
 
 var styles = StyleSheet.create({
   container: {
@@ -191,6 +221,8 @@ var styles = StyleSheet.create({
     color: lightGray
   }
 });
+
+/* --- Redux mapping methods ----------------------------------------------- */
 
 function mapStateToProps (state, { navigation }) {
   const { deckId } = navigation.state.params;
