@@ -37,6 +37,8 @@ After running the `start` command, the console output should tell you at which U
 
 Once you've either scanned the QR code or entered the expo URL in the Expo app, you should be able to test the project in your device. If you happen to come across a network error during this process, **ensure your mobile device is connected to the same network as the computer** in which you run the `start` command.
 
+If you keep having network problems, maybe your firewall is blocking any connections to the ports where your app is deployed. **Incoming connections to ports 19000, 19001 and 19002 must be allowed** in order for your device to be able to connect to your application server.
+
 ## Project structure
 
 The project folder structure is as follows:
@@ -71,7 +73,8 @@ This application has only been tested in the following devices:
 | Device model | Operating System |
 |---|---|
 | [Motorola Moto E (2nd Gen)](https://www.gsmarena.com/motorola_moto_e_(2nd_gen)-6986.php) | Android 6.0 |
-| [BQ Aquaris X](https://www.gsmarena.com/bq_aquaris_x-8642.php) | Android 7.0 |
+| [BQ Aquaris M8](http://www.gsm-specs.com/specifications/bq-aquaris-m8-tablet/) | Android 6.0 |
+| [BQ Aquaris X](https://www.gsmarena.com/bq_aquaris_x-8642.php) | Android 7.1 |
 
 It's possible that _it might present unexpected behaviours or rendering problems in other operating systems_.
 
