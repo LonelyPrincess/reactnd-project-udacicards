@@ -3,14 +3,23 @@ import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { green, white, lightGreen, orange, red, gray, lightGray, lightYellow } from '../constants/Colors';
-import { countDaysSinceDate } from '../utils/Utils';
-
 import Button from './Button';
-import * as SCREEN_KEYS from '../constants/Screens';
 
+import { countDaysSinceDate } from '../utils/Utils';
+import * as SCREEN_KEYS from '../constants/Screens';
+import { white, orange, gray, lightGray, lightYellow } from '../constants/Colors';
+
+/**
+ * Component that renders a view with details on a specified deck.
+ *
+ * @module components/DeckDetails
+ */
 class DeckDetails extends React.Component {
 
+  /**
+   * Returns the view of the component.
+   * @returns JSX template for the component.
+   */
   render() {
     const { deck, navigation } = this.props;
 
@@ -42,6 +51,8 @@ class DeckDetails extends React.Component {
   }
 }
 
+/* --- Component styles ---------------------------------------------------- */
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -67,6 +78,8 @@ const styles = StyleSheet.create({
     marginBottom: 10
   }
 });
+
+/* --- Redux mapping methods ----------------------------------------------- */
 
 function mapStateToProps (state, { navigation }) {
   const { deckId } = navigation.state.params;
