@@ -17,6 +17,8 @@ volved in the development process.
 ## Useful documentation
 
 * [Use JSDoc](http://usejsdoc.org/)
+* [React docs](https://reactjs.org/docs/)
+* [React Cheatsheet](https://devhints.io/react)
 * [React Native docs](https://facebook.github.io/react-native/docs/components-and-apis.html)
 * [React Navigation docs](https://reactnavigation.org/docs/)
 * [Expo vector icons reference](https://expo.github.io/vector-icons/)
