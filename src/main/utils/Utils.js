@@ -16,6 +16,7 @@ export function countDaysSinceDate (date) {
 
 /**
  * Display a toast message on screen.
+ * @param {string} message - Message to display.
  */
 export function displayToast (message) {
   ToastAndroid.showWithGravityAndOffset(
