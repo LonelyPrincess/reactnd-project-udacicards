@@ -1,9 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { gray, lightGray } from '../constants/Colors';
 
+/**
+ * Stateless component that renders an informative message next to an icon.
+ *
+ * @module components/InfoMessage
+ * @param children - Message to display.
+ * @param {object} [iconPos] - Position where the icon will appear. By default
+ *  it will always be displayed on the right side of the message.
+ */
 export default function InfoMessage ({ children, iconPos = 'right' }) {
   const leftIcon = iconPos === 'left';
 
@@ -15,6 +24,15 @@ export default function InfoMessage ({ children, iconPos = 'right' }) {
     </View>
   );
 }
+
+/* --- Property validation ------------------------------------------------- */
+
+InfoMessage.propTypes = {
+  iconPos: PropTypes.string,
+  children: PropTypes.string.isRequired
+};
+
+/* --- Component styles ---------------------------------------------------- */
 
 const styles = StyleSheet.create({
   infoContainer: {
@@ -31,5 +49,5 @@ const styles = StyleSheet.create({
   },
   infoIcon: {
     color: lightGray
-  }  
+  }
 });

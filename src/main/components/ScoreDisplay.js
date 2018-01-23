@@ -1,12 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { white, green, red, gray, lightGray } from '../constants/Colors';
 
+/**
+ * Stateless component that renders user score, as well as a feedback message
+ * based on their results.
+ *
+ * @module components/ScoreDisplay
+ * @param {number} successRatio - Percentage of success obtained by the user.
+ */
 export default function ScoreDisplay ({ successRatio }) {
   let icon, message;
 
+  // Set icon and feedback message based on the obtained score
   if (successRatio < 40) {
     icon = 'emoticon-dead';
     message = `Oops! It seems as if you need to review more...`;
@@ -27,21 +36,29 @@ export default function ScoreDisplay ({ successRatio }) {
   return (
     <View style={styles.container}>
       <Text style={styles.scoreTitle}>Your score is...</Text>
-      <Text style={[ styles.score, { color: (successRatio < 50 ? red : green )}]}>{successRatio}%</Text>
+      <Text style={[styles.score, { color: (successRatio < 50 ? red : green )}]}>{successRatio}%</Text>
       <Text style={styles.feedbackMessage}>{message}</Text>
-      <MaterialCommunityIcons name={icon} size={200} style={[ styles.icon, styles.withShadow ]}/>
+      <MaterialCommunityIcons name={icon} size={200} style={styles.icon}/>
     </View>
   );
 }
 
+/* --- Property validation ------------------------------------------------- */
+
+ScoreDisplay.propTypes = {
+  successRatio: PropTypes.number.isRequired
+};
+
+/* --- Component styles ---------------------------------------------------- */
+
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 30
   },
   icon: {
     color: lightGray,
     marginTop: 10,
-    marginBottom: 25
   },
   score: {
     fontSize: 36,
@@ -56,14 +73,5 @@ const styles = StyleSheet.create({
   feedbackMessage: {
     textAlign: 'center',
     flexShrink: 1
-  },
-  withShadow: {
-    shadowRadius: 3,
-    shadowOpacity: 0.8,
-    shadowColor: 'rgba(0,0,0,0.25)',
-    shadowOffset: {
-      width: 0,
-      height: 3
-    }
   }
 });
