@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Button from './Button';
@@ -20,6 +20,7 @@ class DeckQuiz extends React.Component {
     cardCounter: 0,
     currentCard: null,
     revealAnswer: false,
+    animSlide: new Animated.Value(1),
     animRotationDeg: new Animated.Value(0)
   };
 
@@ -50,11 +51,16 @@ class DeckQuiz extends React.Component {
     const selectedCard = cards[randomIndex];
     shuffleArray(selectedCard.answers);
 
-    this.setState({
-      revealAnswer: false,
-      currentCard: selectedCard,
-      cardCounter: this.state.cardCounter + 1
-    });
+    Animated.timing(this.state.animSlide, { duration: 100, toValue: 0 })
+      .start(() => {
+        this.setState({
+          revealAnswer: false,
+          currentCard: selectedCard,
+          cardCounter: this.state.cardCounter + 1
+        }, () => {
+          Animated.timing(this.state.animSlide, { duration: 200, toValue: 1 }).start();
+        });
+      });
   };
 
   // Check if answer is correct and increment score if needed
@@ -116,6 +122,11 @@ class DeckQuiz extends React.Component {
       outputRange: ['0deg', '360deg']
     });
 
+    const slide = this.state.animSlide.interpolate({
+      inputRange: [0, 1],
+      outputRange: [-Dimensions.get('window').width, 0]
+    });
+
     return (
       <View style={styles.container}>
         <View style={[ styles.row, { marginBottom: 25 } ]}>
@@ -123,26 +134,28 @@ class DeckQuiz extends React.Component {
           <Text style={{ color: gray }}>{NUM_QUESTIONS - cardCounter + 1} cards left</Text>
         </View>
 
-        <TouchableWithoutFeedback onPress={!revealAnswer ? this.revealAnswer : null}>
-          <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
-            <View style={{ flexGrow: 1, justifyContent: 'center' }}>
-              <Text style={styles.question}>{currentCard.text}</Text>
-            </View>
-            <MaterialCommunityIcons name={!revealAnswer ? 'eye' : 'eye-outline'} size={30} style={styles.timerIcon} />
-            <Text style={{ color: lightGray, fontSize: 12, flexWrap: 'wrap' }}>
-              {!revealAnswer
-                ? 'Click card to reveal the answer'
-                : 'The truth has been revealed'}
-            </Text>
-          </Animated.View>
-        </TouchableWithoutFeedback>
+        <Animated.View style={{ flexGrow: 1, transform: [{ translateX: slide }] }}>
+          <TouchableWithoutFeedback onPress={!revealAnswer ? this.revealAnswer : null}>
+            <Animated.View style={[ styles.card, { transform: [ { rotateY: spin } ] }]}>
+              <View style={{ flexGrow: 1, justifyContent: 'center' }}>
+                <Text style={styles.question}>{currentCard.text}</Text>
+              </View>
+              <MaterialCommunityIcons name={!revealAnswer ? 'eye' : 'eye-outline'} size={30} style={styles.timerIcon} />
+              <Text style={{ color: lightGray, fontSize: 12, flexWrap: 'wrap' }}>
+                {!revealAnswer
+                  ? 'Click card to reveal the answer'
+                  : 'The truth has been revealed'}
+              </Text>
+            </Animated.View>
+          </TouchableWithoutFeedback>
 
-        {currentCard.answers.map((answer, index) => (
-          <Button key={index} onPress={() => this.submitCardAnswer(answer.isTrue)}
-            style={revealAnswer && !answer.isTrue ? { backgroundColor: red } : {}}>
-            {answer.text}
-          </Button>
-        ))}
+          {currentCard.answers.map((answer, index) => (
+            <Button key={index} onPress={() => this.submitCardAnswer(answer.isTrue)}
+              style={revealAnswer && !answer.isTrue ? { backgroundColor: red } : {}}>
+              {answer.text}
+            </Button>
+          ))}
+        </Animated.View>
       </View>
     );
   }
