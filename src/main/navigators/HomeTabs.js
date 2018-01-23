@@ -1,3 +1,4 @@
+import React from 'react';
 import { Platform } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
